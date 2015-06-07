@@ -1,0 +1,26 @@
+﻿{% extends "base.html" %}
+
+{% block content %}
+<h3>Please sign in with your NyanCoin address:</h3>
+{{ form.non_field_errors }}
+<form class="form-inline" method="post">
+    {% csrf_token %}
+    
+    {% for error in form.address.errors %}
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Alert!</strong> {{ error|escape }}
+    </div>
+    {% endfor %}
+
+    <input type="text" class="input-large" placeholder="NyanCoin Address" name="address" size="48">
+    <label class="checkbox">
+        <input type="checkbox" name="remember_me"> Remember me
+    </label>
+    <p><br /><button type="submit" class="btn btn-success">Sign in</button></p>
+</form>
+<p>
+    <h4>... or if you do not have an account yet:</h4>
+    <a class="btn btn-danger" href="{% url 'register' %}">Register</a>
+</p>
+{% endblock %}

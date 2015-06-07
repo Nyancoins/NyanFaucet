@@ -11,8 +11,8 @@ class BaseModel(models.Model):
 
 
 class FaucetUser(BaseModel):
-  address = models.CharField(max_length=48)
-  email = models.EmailField() # @todo: for verification?
+  address = models.CharField(max_length=48, unique=True)
+  email = models.EmailField(unique=True) # @todo: for verification?
 
 
 class Rolls(BaseModel):

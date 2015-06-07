@@ -27,6 +27,7 @@
     <Compile Include="nyanfaucet\nyanfaucet\wsgi.py" />
     <Compile Include="nyanfaucet\nyanfaucet\__init__.py" />
     <Compile Include="nyanfaucet\web\admin.py" />
+    <Compile Include="nyanfaucet\web\btc.py" />
     <Compile Include="nyanfaucet\web\forms.py">
       <SubType>Code</SubType>
     </Compile>
@@ -137,7 +138,10 @@
     <Content Include="nyanfaucet\web\static\tile.png" />
     <Content Include="nyanfaucet\web\templates\base.html" />
     <Content Include="nyanfaucet\web\templates\default.html" />
+    <Content Include="nyanfaucet\web\templates\login.html" />
+    <Content Include="nyanfaucet\web\templates\messages.html" />
     <Content Include="nyanfaucet\web\templates\navbar.html" />
+    <Content Include="nyanfaucet\web\templates\register.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="nyanfaucet" />

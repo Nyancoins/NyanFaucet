@@ -37,7 +37,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">NyanFaucet</a>
+                <a class="navbar-brand" href="{% url 'default' %}">NyanFaucet</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 {% include 'navbar.html' %}
@@ -46,8 +46,9 @@
     </nav>
 
 
-
+    {% include 'messages.html' %}
     <div class="container">
+        
         {% block content %}{% endblock %}
 
         <hr>
