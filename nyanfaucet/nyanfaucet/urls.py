@@ -22,7 +22,12 @@ urlpatterns = [
   url(r'^admin/', include(admin.site.urls)),
   
   url(r'^/?$', views.DefaultView.as_view(), name='default'),
+  
   url(r'^login$', views.LoginView.as_view(), name='login'),
   url(r'^register$', views.RegisterView.as_view(), name='register'),
-  url(r'^logout$', views.LogoutView.as_view(), name='signout'),
+  url(r'^logout$', views.LogoutView.as_view(), name='logout'),
+
+  url(r'^play$', views.DefaultView.as_view(), name='play'),
+  url(r'^withdraw$', views.DefaultView.as_view(), name='withdraw'),
+  url(r'^account$', views.DefaultView.as_view(), name='account'),
 ]

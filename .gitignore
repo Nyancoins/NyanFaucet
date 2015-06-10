@@ -54,3 +54,4 @@ target/
 *.sqlite3
 *.suo
 /nyanfaucet/static
+/*.user

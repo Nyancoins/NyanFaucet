@@ -1,9 +1,10 @@
-﻿<ul class="nav navbar-nav">
-    <!-- @todo: automate 'active' class -->
-    <li class="active"><a href="#">About</a></li>
-    <li><a href="#">Play</a></li>
-    <li><a href="#">Withdraw</a></li>
-    <li><a href="#">History</a></li>
+﻿{% load bootstrap %}
+
+<ul class="nav navbar-nav">
+    <li class="{% navactive request 'default' %}"><a href="{% url 'default'%}">About</a></li>
+    <li class="{% navactive request 'play' %}"><a href="{% url 'play'%}">Play</a></li>
+    <li class="{% navactive request 'withdraw' %}"><a href="{% url 'withdraw'%}">Withdraw</a></li>
+    <li class="{% navactive request 'account' %}"><a href="{% url 'account'%}">History</a></li>
 </ul>
 
 {% if request.session.address %}
@@ -12,7 +13,7 @@
     <li></li>
     <li>
         <div class="navbar-form navbar-right">
-            <a class="btn btn-danger" href="{% url 'signout' %}">Sign out</a>
+            <a class="btn btn-danger" href="{% url 'logout' %}">Sign out</a>
         </div>
     </li>
 </ul>
@@ -24,6 +25,6 @@
         <input type="text" placeholder="NyanCoin Address" class="form-control" id="address" name="address">
     </div>
     <button type="submit" class="btn btn-success">Sign in</button>
-    <a class="btn btn-danger" href="{% url 'register' %}">Register</a>
+    <a class="btn btn-primary" href="{% url 'register' %}">Register</a>
 </form>
 {% endif %}

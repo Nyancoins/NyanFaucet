@@ -8,7 +8,13 @@
         <p>
             Welcome to the Nyan Faucet.
         </p>
-        <p><a class="btn btn-success btn-lg" href="#" role="button">Get started &raquo;</a></p>
+        <p>
+            {% if request.session.address %}
+            Huzzah! You are already registered<br /><a class="btn btn-success btn-lg" href="{% url 'play'%}" role="button">Play now &raquo;</a>
+            {% else %}
+            <a class="btn btn-success btn-lg" href="{% url 'register'%}" role="button">Get started &raquo;</a>
+            {% endif %}
+        </p>
     </div>
 </div>
 <!-- Example row of columns -->
@@ -24,9 +30,9 @@
         <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Community</h2>
+        <h2><i class="fa fa-reddit"></i> Community</h2>
         <p>Visit the NyanCoin community on Reddit</p>
-        <p><a class="btn btn-default" href="http://www.reddit.com/r/nyancoins/" role="button">Nyan &raquo;</a></p>
+        <p><a class="btn btn-default" href="http://www.reddit.com/r/nyancoins/" role="button">/r/NyanCoins &raquo;</a></p>
     </div>
 </div>
 {% endblock %}

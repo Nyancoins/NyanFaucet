@@ -15,7 +15,7 @@ class DefaultView(generic.TemplateView):
 class LoginView(generic.FormView):
     template_name = "login.html"
     form_class = LoginForm
-    success_url = "/play/"
+    success_url = "/play"
 
     def form_valid(self, form):
         addr = form.cleaned_data['address']
@@ -37,19 +37,22 @@ class LoginView(generic.FormView):
 class RegisterView(generic.FormView):
     template_name = "register.html"
     form_class = RegisterForm
-    success_url = "/play/"
+    success_url = "/play"
 
     def form_valid(self, form):
         addr = form.cleaned_data['address']
         email = form.cleaned_data['email']
 
-        # @todo: create user, catch unique constraint exceptions, set session vars ...
+        usr = FaucetUser(address=addr, email=email)
+        usr.save()
 
-        messages.info(self.request, "This feature is currently not enabled.", 'warning')
         return redirect('register')
 
-
         return super(RegisterView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        ctx = super(RegisterView, self).get_context_data(**kwargs)
+        return ctx
 
 class LogoutView(generic.View):
     def get(self, request):

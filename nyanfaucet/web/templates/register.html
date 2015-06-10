@@ -1,6 +1,7 @@
 ﻿{% extends "base.html" %}
 
 {% block content %}
+<h2>Register account:</h2>
 <form class="form-horizontal" action="{% url 'register' %}" method="post">
     {% csrf_token %}
     <div class="form-group {% if form.address.errors %} has-error{% endif %}">
@@ -12,7 +13,7 @@
         {% endfor %}
         <label for="inputaddress" class="col-sm-2 control-label">NyanCoin address</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputaddress" name="address" placeholder="NyanCoin address">
+            <input type="text" class="form-control" id="inputaddress" name="address" placeholder="NyanCoin address" value="{% if form.address.value %}{{form.address.value}}{% endif %}">
         </div>
     </div>
 
@@ -20,12 +21,11 @@
         {% for error in form.email.errors %}
         <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Alert!</strong> {{ error|escape }}
-        </div>
+            <strong>Alert!</strong> {{ error|escape }}></div>
         {% endfor %}
         <label for="inputEmail" class="col-sm-2 control-label">Email</label>
         <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email">
+            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="{% if form.email.value %}{{form.email.value}}{% endif %}">
         </div>
     </div>
     <div class="form-group">
@@ -39,7 +39,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default">Sign in</button>
+            <button type="submit" class="btn btn-primary">Register</button>
         </div>
     </div>
 </form>

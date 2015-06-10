@@ -35,6 +35,9 @@
     <Compile Include="nyanfaucet\web\migrations\0002_auto_20150607_0351.py" />
     <Compile Include="nyanfaucet\web\migrations\__init__.py" />
     <Compile Include="nyanfaucet\web\models.py" />
+    <Compile Include="nyanfaucet\web\templatetags\bootstrap.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="nyanfaucet\web\tests.py" />
     <Compile Include="nyanfaucet\web\views.py" />
     <Compile Include="nyanfaucet\web\__init__.py" />
@@ -159,6 +162,7 @@
     <Folder Include="nyanfaucet\static\js\vendor" />
     <Folder Include="nyanfaucet\web" />
     <Folder Include="nyanfaucet\web\migrations" />
+    <Folder Include="nyanfaucet\web\templatetags\" />
     <Folder Include="nyanfaucet\web\static" />
     <Folder Include="nyanfaucet\web\static\css" />
     <Folder Include="nyanfaucet\web\static\fonts" />
