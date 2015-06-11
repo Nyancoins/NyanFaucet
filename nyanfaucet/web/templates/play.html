@@ -1,0 +1,33 @@
+﻿{% extends "base.html" %}{% load staticfiles %}
+
+{% block content %}
+
+
+
+<div class="row">
+    <noscript><h1>This page requires JavaScript to function!</h1></noscript>
+    {% if nextroll <= 1 %}
+    <p><button class="btn btn-success btn-lg" type="button" id="cmdRoll">Roll dice</button></p>
+    {% else %}
+    <p>You rolled {{lastroll}}!</p>
+    <p>Next roll in {{nextroll}} seconds.</p>
+    {% endif %}
+
+    <p>
+        {% if nextroll <= 1 %}
+        Client Seed: <input type="text" readonly id="clientseed" value="loading" /><br />
+        Nonce: <span id="nonce">loading</span>
+        {% endif %}
+    </p>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+    var nonce = "{{nonce}}";
+    var clientseed = Math.random().toString(36).replace(/[^a-zA-Z0-9]+/g, '').substr(0, 32);
+    $('input#clientseed').val(clientseed);
+    $('span#nonce').text(nonce);
+</script>
+<script src="{% static 'js/nyandice.js' %}"></script>
+{% endblock %}

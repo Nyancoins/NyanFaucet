@@ -13,17 +13,24 @@ class BaseModel(models.Model):
 class FaucetUser(BaseModel):
   address = models.CharField(max_length=48, unique=True)
   email = models.EmailField(unique=True) # @todo: for verification?
+  last_roll = models.DateTimeField(auto_now=True)
+
+  def __unicode__(self):
+      return self.email
 
 
-class Rolls(BaseModel):
+class Roll(BaseModel):
   # Model for storing dice rolls for each FaucetUser
   value = models.PositiveIntegerField()
   user = models.ForeignKey(FaucetUser, related_name='rolls')
+  serverseed = models.CharField(max_length=256)
+  clientseed = models.CharField(max_length=32)
+  nonce = models.PositiveIntegerField()
 
   class Meta:
     verbose_name_plural = "Rolls"
 
-class Withdrawals(BaseModel):
+class Withdrawal(BaseModel):
   # Model for storing withdrawals for each FaucetUser
   amount = models.PositiveIntegerField()
   transaction = models.CharField(max_length=64)

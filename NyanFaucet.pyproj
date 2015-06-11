@@ -28,6 +28,7 @@
     <Compile Include="nyanfaucet\nyanfaucet\__init__.py" />
     <Compile Include="nyanfaucet\web\admin.py" />
     <Compile Include="nyanfaucet\web\btc.py" />
+    <Compile Include="nyanfaucet\web\dice.py" />
     <Compile Include="nyanfaucet\web\forms.py">
       <SubType>Code</SubType>
     </Compile>
@@ -131,6 +132,7 @@
     <Content Include="nyanfaucet\web\static\favicon.ico" />
     <Content Include="nyanfaucet\web\static\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="nyanfaucet\web\static\js\main.js" />
+    <Content Include="nyanfaucet\web\static\js\nyandice.js" />
     <Content Include="nyanfaucet\web\static\js\vendor\bootstrap.js" />
     <Content Include="nyanfaucet\web\static\js\vendor\bootstrap.min.js" />
     <Content Include="nyanfaucet\web\static\js\vendor\jquery-1.11.2.min.js" />
@@ -144,6 +146,7 @@
     <Content Include="nyanfaucet\web\templates\login.html" />
     <Content Include="nyanfaucet\web\templates\messages.html" />
     <Content Include="nyanfaucet\web\templates\navbar.html" />
+    <Content Include="nyanfaucet\web\templates\play.html" />
     <Content Include="nyanfaucet\web\templates\register.html" />
   </ItemGroup>
   <ItemGroup>

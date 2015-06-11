@@ -27,4 +27,7 @@ class RegisterForm(forms.ModelForm):
         if validate_nyan(addr) is False:
             raise forms.ValidationError("The address you have entered is NOT valid! A valid address looks like this: KQm7yxJ4EWoohRHv3NaSH8VMxT3owf1oWk")
         return addr
+
+class RollForm(forms.Form):
+    seed = forms.CharField(max_length=32)
     

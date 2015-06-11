@@ -10,7 +10,7 @@
         </p>
         <p>
             {% if request.session.address %}
-            Huzzah! You are already registered<br /><a class="btn btn-success btn-lg" href="{% url 'play'%}" role="button">Play now &raquo;</a>
+            Huzzah, you are already registered!<br /><br /><a class="btn btn-success btn-lg" href="{% url 'play'%}" role="button">Play now &raquo;</a>
             {% else %}
             <a class="btn btn-success btn-lg" href="{% url 'register'%}" role="button">Get started &raquo;</a>
             {% endif %}
