@@ -29,5 +29,5 @@ urlpatterns = [
 
   url(r'^play$', views.PlayView.as_view(), name='play'),
   url(r'^withdraw$', views.DefaultView.as_view(), name='withdraw'),
-  url(r'^account$', views.DefaultView.as_view(), name='account'),
+  url(r'^history', views.HistoryView.as_view(), name='account'),
 ]

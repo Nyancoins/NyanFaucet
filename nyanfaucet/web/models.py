@@ -26,6 +26,7 @@ class Roll(BaseModel):
   serverseed = models.CharField(max_length=256)
   clientseed = models.CharField(max_length=32)
   nonce = models.PositiveIntegerField()
+  winnings = models.PositiveIntegerField()
 
   class Meta:
     verbose_name_plural = "Rolls"

@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 from django.utils.timezone import utc
 
 from web.forms import LoginForm, RegisterForm, RollForm
-from web.models import FaucetUser, Roll
+from web.models import FaucetUser, Roll, Withdrawal
 
 from dice import RollDice
 
@@ -98,8 +98,10 @@ class PlayView(generic.FormView):
 
         if usr.rolls.count() > 0:
             nextroll = ((usr.last_roll - datetime.utcnow().replace(tzinfo=utc)) + timedelta(seconds=settings.NYAN_ROLL_INTERVAL)).total_seconds()
+            lr = usr.rolls.last()
             ctx['nextroll'] = nextroll
-            ctx['lastroll'] = usr.rolls.last().value
+            ctx['lastroll'] = lr.value
+            ctx['lastwinnings'] = lr.winnings
 
         ctx['nonce'] = nonce
         #print ctx['nextroll']
@@ -119,8 +121,21 @@ class PlayView(generic.FormView):
         nonce = usr.rolls.count() +1
         diceroll, ss = RollDice(nonce, cs)
 
-        r = Roll(user=usr, value=diceroll, clientseed=cs, serverseed=ss, nonce=nonce)
+        # @todo: discern winnings
+        winnings = 666
+
+        r = Roll(user=usr, value=diceroll, clientseed=cs, serverseed=ss, nonce=nonce, winnings=winnings)
         r.save()
         usr.save()
 
         return super(PlayView, self).form_valid(form)
+
+class HistoryView(generic.TemplateView):
+    template_name = "history.html"
+    model = FaucetUser
+
+    def get_context_data(self, **kwargs):
+        context = super(HistoryView, self).get_context_data(**kwargs)
+        context['withdrawals'] = Withdrawal.objects.order_by('-pk')
+        context['rolls'] = Roll.objects.order_by('-pk')
+        return context

@@ -7,7 +7,7 @@
     {% if nextroll <= 1 %}
     <p><button class="btn btn-success btn-lg" type="button" id="cmdRoll">Roll dice</button></p>
     {% else %}
-    <h2>You rolled {{lastroll}} and win {winnings} NYAN!</h2>
+    <h2>You rolled {{lastroll}} and win {{lastwinnings}} NYAN!</h2>
     <h3>Next roll in <span id="timeleft">{{nextroll}}</span> seconds.</h3>
     {% endif %}
 

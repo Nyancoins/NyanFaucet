@@ -1,0 +1,18 @@
+﻿<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>TX</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for w in withdrawals %}
+        <tr>
+            <td>{{w.created_date}}</td>
+            <td>{{w.amount}}</td>
+            <td><a href="https://nyan.space/tx/{{w.transaction}}" target="_blank">{{w.transaction|truncatechars:12}}</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

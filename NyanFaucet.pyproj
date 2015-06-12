@@ -36,9 +36,13 @@
     <Compile Include="nyanfaucet\web\migrations\0002_auto_20150607_0351.py" />
     <Compile Include="nyanfaucet\web\migrations\__init__.py" />
     <Compile Include="nyanfaucet\web\models.py" />
+    <Compile Include="nyanfaucet\web\templatetags\account_helpers.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="nyanfaucet\web\templatetags\bootstrap.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="nyanfaucet\web\templatetags\__init__.py" />
     <Compile Include="nyanfaucet\web\tests.py" />
     <Compile Include="nyanfaucet\web\views.py" />
     <Compile Include="nyanfaucet\web\__init__.py" />
@@ -141,6 +145,9 @@
     <Content Include="nyanfaucet\web\static\robots.txt" />
     <Content Include="nyanfaucet\web\static\tile-wide.png" />
     <Content Include="nyanfaucet\web\static\tile.png" />
+    <Content Include="nyanfaucet\web\templates\history.html" />
+    <Content Include="nyanfaucet\web\templates\account_rolls.html" />
+    <Content Include="nyanfaucet\web\templates\account_withdrawals.html" />
     <Content Include="nyanfaucet\web\templates\base.html" />
     <Content Include="nyanfaucet\web\templates\default.html" />
     <Content Include="nyanfaucet\web\templates\login.html" />
