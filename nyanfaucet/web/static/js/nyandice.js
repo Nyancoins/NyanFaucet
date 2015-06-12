@@ -1,5 +1,8 @@
-﻿$('#cmdRoll').click(function (e) {
+﻿
+var cmdRoll = $('#cmdRoll');
+cmdRoll.click(function (e) {
     e.preventDefault();
+    cmdRoll.attr('disabled', 'disabled');
     console.log("Rock 'n' roll!");
 
     $.post("/play", {
