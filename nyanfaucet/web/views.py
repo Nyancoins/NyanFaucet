@@ -14,7 +14,7 @@ from django.utils.timezone import utc
 from web.forms import LoginForm, RegisterForm, RollForm
 from web.models import FaucetUser, Roll, Withdrawal
 
-from dice import RollDice
+from dice import RollDice, CalculateWinnings, WINNINGS_MULTIPLIERS
 
 # Create your views here.
 
@@ -91,6 +91,9 @@ class PlayView(generic.FormView):
         return super(PlayView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
+        """
+            GET & POST - template variables
+        """
         ctx = super(PlayView, self).get_context_data(**kwargs)
 
         usr = FaucetUser.objects.get(address=self.request.session['address'])
@@ -104,10 +107,21 @@ class PlayView(generic.FormView):
             ctx['lastwinnings'] = lr.winnings
 
         ctx['nonce'] = nonce
-        #print ctx['nextroll']
+
+        jackpot = 1000000 # @todo set dynamically to some cash value
+        ctx['jackpot'] = jackpot
+
+        payout_table = []
+        for v in sorted(WINNINGS_MULTIPLIERS.iterkeys(), reverse=False):
+            payout_table.append([v, jackpot*WINNINGS_MULTIPLIERS[v]])
+        ctx['payout_table'] = payout_table
+        
         return ctx
 
     def form_valid(self, form):
+        """
+            POST - roll dice from user input
+        """
         cs = form.cleaned_data['seed']
 
         usr = FaucetUser.objects.get(address=self.request.session['address'])
@@ -121,8 +135,8 @@ class PlayView(generic.FormView):
         nonce = usr.rolls.count() +1
         diceroll, ss = RollDice(nonce, cs)
 
-        # @todo: discern winnings
-        winnings = 666
+        jackpot = 1000000 # @todo set dynamically to some cash value
+        winnings = CalculateWinnings(diceroll, jackpot)
 
         r = Roll(user=usr, value=diceroll, clientseed=cs, serverseed=ss, nonce=nonce, winnings=winnings)
         r.save()

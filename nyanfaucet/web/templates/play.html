@@ -1,22 +1,47 @@
-﻿{% extends "base.html" %}{% load staticfiles %}
+﻿{% extends "base.html" %}{% load staticfiles %}{% load humanize %}
 
 {% block content %}
 
 <div class="row">
     <noscript><h1>This page requires JavaScript to function!</h1></noscript>
-    {% if nextroll <= 1 %}
-    <p><button class="btn btn-success btn-lg" type="button" id="cmdRoll">Roll dice</button></p>
-    {% else %}
-    <h2>You rolled {{lastroll}} and win {{lastwinnings}} NYAN!</h2>
-    <h3>Next roll in <span id="timeleft">{{nextroll}}</span> seconds.</h3>
-    {% endif %}
 
-    <p>
+    <div class="col-md-8">
         {% if nextroll <= 1 %}
-        Client Seed: <input type="text" readonly id="clientseed" value="loading" /><br />
-        Nonce: <span id="nonce">loading</span>
+        <p><button class="btn btn-success btn-lg" type="button" id="cmdRoll">Roll dice</button></p>
+        {% else %}
+        <h2>You rolled {{lastroll|stringformat:"05d"}} and win {{lastwinnings}} NYAN!</h2>
+        <h3>Next roll in <span id="timeleft">{{nextroll}}</span> seconds.</h3>
         {% endif %}
-    </p>
+
+        <p>
+            {% if nextroll <= 1 %}
+            Client Seed: <input type="text" readonly id="clientseed" value="loading" /><br />
+            Nonce: <span id="nonce">loading</span>
+            {% endif %}
+        </p>
+    </div>
+    <div class="col-md-4">
+        <h2>Prize table:</h2>
+        <p>
+            The amount of NyanCoins that you can win depends on the number that you roll and will pay out according to the table below:
+        </p>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="text-center">Roll <small>at least:</small></th>
+                    <th class="text-right">Payout:</th>
+                </tr>
+            </thead>
+            <tbody style="font-weight:bold">
+                {% for v, p in payout_table %}
+                <tr>
+                    <td class="text-center">{{v}}</td>
+                    <td class="text-right">{{p|intcomma}} NYAN</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}
 
