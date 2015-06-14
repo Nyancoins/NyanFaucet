@@ -22,7 +22,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="nyanfaucet\manage.py" />
-    <Compile Include="nyanfaucet\nyanfaucet\settings.py" />
+    <Compile Include="nyanfaucet\nyanfaucet\nyandrill.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="nyanfaucet\nyanfaucet\settings\base.py" />
+    <Compile Include="nyanfaucet\nyanfaucet\settings\production.py" />
+    <Compile Include="nyanfaucet\nyanfaucet\settings\__init__.py" />
     <Compile Include="nyanfaucet\nyanfaucet\urls.py" />
     <Compile Include="nyanfaucet\nyanfaucet\wsgi.py" />
     <Compile Include="nyanfaucet\nyanfaucet\__init__.py" />
@@ -159,6 +164,7 @@
   <ItemGroup>
     <Folder Include="nyanfaucet" />
     <Folder Include="nyanfaucet\nyanfaucet" />
+    <Folder Include="nyanfaucet\nyanfaucet\settings\" />
     <Folder Include="nyanfaucet\static" />
     <Folder Include="nyanfaucet\static\admin\" />
     <Folder Include="nyanfaucet\static\admin\css" />

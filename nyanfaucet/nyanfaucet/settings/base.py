@@ -27,8 +27,23 @@ SECRET_KEY = 'wwbu^ngksd6rj$)0*^87&%elp9(kbi*=(xpg8fyjs$%zaa298#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
 
+
+# Change email below to get stack traces in production
+ADMINS = (
+    ('NyanFaucet Admin', 'faucet-admin@localhost'),
+)
+
+# Uncomment and set value below to enable Django's email feature
+#SERVER_EMAIL = 'noreply@localhost'
+
+# Uncomment and change values below to use my Mandrill email backend
+#EMAIL_BACKEND = 'nyanfaucet.nyandrill.MandrillBackend'
+#MANDRILL_SECRET = 'yT39LKGnJCz7JtGof7N9fw' # See: https://mandrillapp.com/settings/index
 
 # Application definition
 

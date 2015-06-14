@@ -1,7 +1,7 @@
 
 
 /* ==========================================================================
-   Author's custom styles
+   NyanFaucet custom styles
    ========================================================================== */
 
 
@@ -11,12 +11,30 @@
 
 
 
+/*
+body {
+    color: #edf2f7;
+    background:url(/static/img/background.png) repeat;
+}
 
+.table-striped>tbody>tr:nth-child(odd) {
+  background-color: #226090;
+}
 
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    border-top: 1px solid #7facd0;
+}
 
+.table>thead>tr>th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #7facd0;
+}
 
-
-
+input[type=text] {
+    background-color:#226090;
+    color:#edf2f7;
+}
+*/
 
 
 

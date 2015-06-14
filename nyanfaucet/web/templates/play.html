@@ -5,12 +5,19 @@
 <div class="row">
     <noscript><h1>This page requires JavaScript to function!</h1></noscript>
 
-    <div class="col-md-8">
+    <div class="col-md-7">
         {% if nextroll <= 1 %}
         <p><button class="btn btn-success btn-lg" type="button" id="cmdRoll">Roll dice</button></p>
         {% else %}
-        <h2>You rolled {{lastroll|stringformat:"05d"}} and win {{lastwinnings}} NYAN!</h2>
+        
+        <h2>You rolled {{lastroll|stringformat:"05d"}} and win {{lastwinnings|intcomma}} NYAN!</h2>
         <h3>Next roll in <span id="timeleft">{{nextroll}}</span> seconds.</h3>
+        
+        <p>
+            <img class="img-responsive img-rounded" style="box-shadow:rgba(128, 128, 128, 0.5) 3px 3px 4px" src="{% static 'img/sleepy_by_Nyan-Tortik.png' %}" alt="Sleepy Nyan-Cat by Nyan-Tortik - http://nyan-tortik.deviantart.com/art/sleepy-day-of-nyan-cat-273759792" /><br />
+            <small style="color:#999;font-style:italic"><a rel="nofollow" target="_blank" href="http://nyan-tortik.deviantart.com/art/sleepy-day-of-nyan-cat-273759792">Sleepy Nyan-Cat by Nyan-Tortik</a></small>
+        </p>
+
         {% endif %}
 
         <p>
@@ -20,7 +27,7 @@
             {% endif %}
         </p>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-5">
         <h2>Prize table:</h2>
         <p>
             The amount of NyanCoins that you can win depends on the number that you roll and will pay out according to the table below:
@@ -29,7 +36,7 @@
             <thead>
                 <tr>
                     <th class="text-center">Roll <small>at least:</small></th>
-                    <th class="text-right">Payout:</th>
+                    <th class="text-center">Payout:</th>
                 </tr>
             </thead>
             <tbody style="font-weight:bold">
@@ -47,7 +54,7 @@
 
 {% block js %}
 <script>
-    var nextroll = {{nextroll}};
+    var nextroll = parseFloat("0{{nextroll}}");
     var nonce = "{{nonce}}";
     var clientseed = Math.random().toString(36).replace(/[^a-zA-Z0-9]+/g, '').substr(0, 32);
     $('input#clientseed').val(clientseed);

@@ -6,7 +6,7 @@ SERVER_IDENT = "nyan~ :3!"  # used for server seed
 DIVIDER = 429496.7295       # based on the FreeDogecoin formula, for normalizing values between 0 and 10.000 (? @todo: check! )
 
 WINNINGS_MULTIPLIERS = {
-    10000: 1,       # 1 in 10.000       00.01 %
+    10000: 1.0,       # 1 in 10.000       00.01 %
     9998: 0.1,      # 2 in 10.000       00.02 %
     9994: 0.001,    # 4 in 10.000       00.04 %
     9986: 0.0001,   # 8 in 10.000       00.08 %
