@@ -154,6 +154,9 @@ class HistoryView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HistoryView, self).get_context_data(**kwargs)
-        context['withdrawals'] = Withdrawal.objects.order_by('-pk')
-        context['rolls'] = Roll.objects.order_by('-pk')
+
+        usr = FaucetUser.objects.get(address=self.request.session['address'])
+
+        context['withdrawals'] = usr.withdrawals.order_by('-pk').all()
+        context['rolls'] = usr.rolls.order_by('-pk').all()
         return context
