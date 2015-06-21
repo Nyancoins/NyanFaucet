@@ -39,7 +39,7 @@ class MandrillBackend(BaseEmailBackend):
             return
 
         for msg in email_messages:
-            to = []
+            """to = []
             for r in msg.recipients():
                 to.append({
                     'email': r,
@@ -51,5 +51,7 @@ class MandrillBackend(BaseEmailBackend):
                 'from_email': msg.from_email,
                 'text': msg.message().as_bytes(),
             }
-            self.client.messages.send(mm, async=True)
+            self.client.messages.send(mm, async=True)"""
+
+            self.client.messages.send_raw(raw_message=msg.message().as_bytes(), async=True)
 
