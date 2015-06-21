@@ -148,6 +148,10 @@ class HistoryView(generic.TemplateView):
     template_name = "history.html"
     model = FaucetUser
 
+    @method_decorator(nyan_login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(HistoryView, self).dispatch(*args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(HistoryView, self).get_context_data(**kwargs)
         context['withdrawals'] = Withdrawal.objects.order_by('-pk')
