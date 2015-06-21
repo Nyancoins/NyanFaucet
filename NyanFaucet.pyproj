@@ -26,6 +26,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="nyanfaucet\nyanfaucet\settings\base.py" />
+    <Compile Include="nyanfaucet\nyanfaucet\settings\testing.py" />
     <Compile Include="nyanfaucet\nyanfaucet\settings\production.py" />
     <Compile Include="nyanfaucet\nyanfaucet\settings\__init__.py" />
     <Compile Include="nyanfaucet\nyanfaucet\urls.py" />
