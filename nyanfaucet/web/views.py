@@ -54,7 +54,7 @@ class LoginView(generic.FormView):
 
         self.request.session['address'] = addr
 
-        ret = self.request.session['return']
+        ret = self.request.session.pop('return', None)
         if ret:
             return redirect(ret)
 
