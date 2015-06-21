@@ -1,0 +1,65 @@
+server {
+	listen                  80;
+	server_name             faucet.nyan.space;
+	location /robots.txt { alias /home/bloody/htdocs/robots.txt; }
+
+	access_log /var/log/nginx/faucet.nyan.space.access.log;
+	error_log /var/log/nginx/faucet.nyan.space.error.log;
+	
+	if ($is_bot) {
+		return 444;
+	}
+	
+	root /home/bloody/apps/nyanfaucet/static;
+	
+	location /static {
+		alias /home/bloody/apps/nyanfaucet/static;
+		expires 7d;
+	}
+
+	location / {
+		try_files $uri @app;
+	}
+	
+	location @app {
+		include uwsgi_params;
+		uwsgi_pass 127.0.0.1:9200;
+	}
+	
+	include drop.conf;
+}
+
+server {
+	listen                  443 ssl spdy;
+	server_name             faucet.nyan.space;
+	location /robots.txt { alias /home/bloody/htdocs/robots.txt; }
+	ssl_certificate		/etc/nginx/ssl/www.nyan.space.crt;
+	ssl_certificate_key	/etc/nginx/ssl/www.nyan.space.key;
+	include ssl_params;
+	#add_header Strict-Transport-Security max-age=15768000;
+
+	access_log /var/log/nginx/faucet.nyan.space.access.log;
+	error_log /var/log/nginx/faucet.nyan.space.error.log;
+	
+	if ($is_bot) {
+		return 444;
+	}
+	
+	root /home/bloody/apps/nyanfaucet/static;
+	
+	location /static {
+		alias /home/bloody/apps/nyanfaucet/static;
+		expires 7d;
+	}
+
+	location / {
+		try_files $uri @app;
+	}
+	
+	location @app {
+		include uwsgi_params;
+		uwsgi_pass 127.0.0.1:9200;
+	}
+	
+	include drop.conf;
+}

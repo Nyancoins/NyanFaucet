@@ -1,5 +1,6 @@
 ﻿
 var cmdRoll = $('#cmdRoll');
+cmdRoll.prop('disabled', false);
 cmdRoll.click(function (e) {
     e.preventDefault();
     cmdRoll.attr('disabled', 'disabled');

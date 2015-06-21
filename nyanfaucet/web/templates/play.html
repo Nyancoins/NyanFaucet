@@ -54,7 +54,7 @@
 
 {% block js %}
 <script>
-    var nextroll = parseFloat("0{{nextroll}}");
+    var nextroll = parseFloat("{{nextroll}}");
     var nonce = "{{nonce}}";
     var clientseed = Math.random().toString(36).replace(/[^a-zA-Z0-9]+/g, '').substr(0, 32);
     $('input#clientseed').val(clientseed);
@@ -72,7 +72,7 @@
                 location.reload();
             }, 100);
         } else {
-            txtTimeLeft.innerText = delta;
+            txtTimeLeft.textContent = delta;
             setTimeout(updateTimer, 1000/15);
         }
     }
