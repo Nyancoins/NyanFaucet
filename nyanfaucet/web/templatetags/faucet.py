@@ -1,6 +1,6 @@
 from django import template
 from django.core.urlresolvers import reverse
-from django.core.cache import get_cache
+from django.core.cache import caches
 from django.contrib.humanize.templatetags.humanize import intcomma
 
 from web.models import FaucetUser
@@ -21,7 +21,7 @@ def balance(request):
 
 @register.simple_tag
 def faucet_balance():
-    c = get_cache('default')
+    c = caches['default']
     details = None
     b = c.get('faucet_balance', None)
     if b is None:
