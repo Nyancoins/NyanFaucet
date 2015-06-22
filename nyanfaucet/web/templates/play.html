@@ -54,37 +54,37 @@
 
 {% block js %}
 <script>
-    var nextroll = parseFloat("{{nextroll}}");
-    var nonce = "{{nonce}}";
     var clientseed = Math.random().toString(36).replace(/[^a-zA-Z0-9]+/g, '').substr(0, 32);
     $('input#clientseed').val(clientseed);
-    $('span#nonce').text(nonce);
+    $('span#nonce').text("{{nonce}}");
 
-    var unixtime = (function () {
-        return Math.floor(new Date().getTime());
-    });
+    (function () {
+        var nextroll = parseFloat("{{nextroll}}");
 
-    var updateTimer = function() {
-        var delta = ((end - unixtime()) / 1000).toFixed(2);
-        if (delta <= 0)
-        {
-            setTimeout(function() {
-                location.reload();
-            }, 100);
-        } else {
-            txtTimeLeft.textContent = delta;
-            setTimeout(updateTimer, 1000/15);
+        var unixtime = (function () {
+            return Math.floor(new Date().getTime());
+        });
+
+        var updateTimer = function () {
+            var delta = ((end - unixtime()) / 1000).toFixed(2);
+            if (delta <= 0) {
+                setTimeout(function () {
+                    location.reload();
+                }, 100);
+            } else {
+                txtTimeLeft.textContent = delta;
+                setTimeout(updateTimer, 1000 / 15);
+            }
         }
-    }
 
-    var end = 0;
-    var txtTimeLeft = $('span#timeleft')[0];
+        var end = 0;
+        var txtTimeLeft = $('span#timeleft')[0];
 
-    if(nextroll > 0) {
-        end = unixtime() + (nextroll * 1000);
-        setTimeout(updateTimer, 1000/15);
-    }
-    
+        if (nextroll > 0) {
+            end = unixtime() + (nextroll * 1000);
+            setTimeout(updateTimer, 1000 / 15);
+        }
+    })();    
 </script>
 <script src="{% static 'js/nyandice.js' %}"></script>
 {% endblock %}

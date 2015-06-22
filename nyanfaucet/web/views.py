@@ -39,8 +39,13 @@ class LoginView(generic.FormView):
     success_url = "/play"
 
     def form_valid(self, form):
-        addr = form.cleaned_data['address']
+        remember_me = form.cleaned_data['remember_me']
+        if remember_me:
+            self.request.session.set_expiry(None)
+        else:
+            self.request.session.set_expiry(0)
 
+        addr = form.cleaned_data['address']
         usr = None
         try:
             usr = FaucetUser.objects.get(address=addr)
@@ -48,8 +53,9 @@ class LoginView(generic.FormView):
             usr = None
 
         if usr is None:
-            # @todo: Transparently create account? Redirect to signup?
-            messages.error(self.request, "Account not found! Please double check the address or sign up for a new account.", 'danger')
+            # @todo: Transparently create account?
+            self.request.session.flush()
+            messages.error(self.request, "Could not find an account for this address, please double check the address or sign up for a new account.", 'danger')
             return redirect('login')
 
         self.request.session['address'] = addr
@@ -68,6 +74,12 @@ class RegisterView(generic.FormView):
     def form_valid(self, form):
         addr = form.cleaned_data['address']
         email = form.cleaned_data['email']
+
+        remember_me = form.cleaned_data['remember_me']
+        if remember_me:
+            self.request.session.set_expiry(None)
+        else:
+            self.request.session.set_expiry(0)
 
         usr = FaucetUser(address=addr, email=email)
         usr.save()
@@ -157,6 +169,6 @@ class HistoryView(generic.TemplateView):
 
         usr = FaucetUser.objects.get(address=self.request.session['address'])
 
-        context['withdrawals'] = usr.withdrawals.order_by('-pk').all()
-        context['rolls'] = usr.rolls.order_by('-pk').all()
+        context['withdrawals'] = usr.withdrawals.order_by('-pk').all()[:30]
+        context['rolls'] = usr.rolls.order_by('-pk').all()[:30]
         return context

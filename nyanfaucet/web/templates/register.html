@@ -1,46 +1,66 @@
 ﻿{% extends "base.html" %}
 
 {% block content %}
-<h2>Register account:</h2>
-<form class="form-horizontal" action="{% url 'register' %}" method="post">
-    {% csrf_token %}
-    <div class="form-group {% if form.address.errors %} has-error{% endif %}">
-        {% for error in form.address.errors %}
-        <div class="alert alert-danger">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Alert!</strong> {{ error|escape }}
-        </div>
-        {% endfor %}
-        <label for="inputaddress" class="col-sm-2 control-label">NyanCoin address</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="inputaddress" name="address" placeholder="NyanCoin address" value="{% if form.address.value %}{{form.address.value}}{% endif %}">
-        </div>
-    </div>
-
-    <div class="form-group {% if form.email.errors %} has-error{% endif %}">
-        {% for error in form.email.errors %}
-        <div class="alert alert-danger">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            <strong>Alert!</strong> {{ error|escape }}</div>
-        {% endfor %}
-        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-        <div class="col-sm-10">
-            <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="{% if form.email.value %}{{form.email.value}}{% endif %}">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" name="remember_me"> Remember me
-                </label>
+<div class="row">
+    <div class="col-md-8">
+        <h2>Register account:</h2>
+        <form class="form-horizontal" action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+            <div class="form-group {% if form.address.errors %} has-error{% endif %}">
+                {% for error in form.address.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Alert!</strong> {{ error|escape }}
+                </div>
+                {% endfor %}
+                <label for="inputaddress" class="col-sm-2 control-label">NyanCoin address</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputaddress" name="address" placeholder="NyanCoin address" value="{% if form.address.value %}{{form.address.value}}{% endif %}">
+                </div>
             </div>
-        </div>
+
+            <div class="form-group {% if form.email.errors %} has-error{% endif %}">
+                {% for error in form.email.errors %}
+                <div class="alert alert-danger">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    <strong>Alert!</strong> {{ error|escape }}
+                </div>
+                {% endfor %}
+                <label for="inputEmail" class="col-sm-2 control-label">Email</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Email" value="{% if form.email.value %}{{form.email.value}}{% endif %}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="remember_me" {% if form.remember_me.value %}checked="checked"{% endif %}> Remember me
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-primary">Register</button>
+    <div class="col-md-4">
+        
+        <h3>Rules:</h3>
+        <div style="font-weight:bold !important">
+            <p>By registering an account, you agree to abide by the following rules and guidelines:</p>
+            <ol>
+                <li>One account per person.</li>
+                <li>Bots, scripts, addons, extensions or other means to gain an unfair advantage are forbidden.</li>
+            </ol>
+            <p>If you are found to be breaking any of the above rules, your account will be deleted and your account balance forfeited.</p>
         </div>
+        <p>
+            We will only use your Email address to notify you of logins and withdrawals.
+        </p>
     </div>
-</form>
+</div>
 {% endblock %}

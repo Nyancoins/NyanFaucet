@@ -18,6 +18,8 @@ class LoginForm(forms.Form):
     remember_me = forms.BooleanField(required=False, initial=False)
 
 class RegisterForm(forms.ModelForm):
+    remember_me = forms.BooleanField(required=False, initial=False)
+
     class Meta:
         model = FaucetUser
         fields = ['address', 'email']

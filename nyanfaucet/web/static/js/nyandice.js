@@ -7,7 +7,6 @@ cmdRoll.click(function (e) {
     console.log("Rock 'n' roll!");
 
     $.post("/play", {
-        nonce: nonce,
         seed: clientseed
     }).done(function (res) {
         location.reload();
