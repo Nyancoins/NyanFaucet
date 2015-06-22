@@ -1,2 +1,3 @@
 Django==1.8.2
 mandrill==1.0.57
+https://github.com/jgarzik/python-bitcoinrpc/archive/master.zip

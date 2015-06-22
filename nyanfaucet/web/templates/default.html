@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{% load faucet %}
 
 {% block content %}
 <!-- Main jumbotron for a primary marketing message or call to action -->
@@ -25,14 +25,15 @@
         <p><a class="btn btn-default" target="_blank" href="http://www.nyancoin.info/whatis.nyan" role="button">Read more &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
         <h2><i class="fa fa-reddit"></i> Community</h2>
         <p>Visit the NyanCoin community on Reddit</p>
         <p><a class="btn btn-default" href="http://www.reddit.com/r/nyancoins/" role="button">/r/NyanCoins &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Faucet balance</h2>
+        <p>Current balance: {% faucet_balance %} NYAN</p>
+        <p>This faucet is entirely run off donations by the community, please consider donating!</p>
+        <p><a class="btn btn-primary" href="#" role="button">Donate <strong>&hearts;</strong> &raquo;</a></p>
     </div>
 </div>
 {% endblock %}

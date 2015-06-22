@@ -22,7 +22,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="nyanfaucet\cryptocoin\admin.py" />
-    <Compile Include="nyanfaucet\cryptocoin\btc.py" />
+    <Compile Include="nyanfaucet\cryptocoin\rpc.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="nyanfaucet\cryptocoin\validation.py" />
     <Compile Include="nyanfaucet\cryptocoin\migrations\__init__.py" />
     <Compile Include="nyanfaucet\cryptocoin\models.py" />
     <Compile Include="nyanfaucet\cryptocoin\tests.py" />
@@ -52,6 +55,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="nyanfaucet\web\templatetags\bootstrap.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="nyanfaucet\web\templatetags\faucet.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="nyanfaucet\web\templatetags\__init__.py" />

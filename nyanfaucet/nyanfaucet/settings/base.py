@@ -16,6 +16,7 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 NYAN_ROLL_INTERVAL = 60*1  # seconds between rolls
+RPC_URL = r'http://nyan:nyannyan@127.0.0.1:33700'
 
 
 # Quick-start development settings - unsuitable for production

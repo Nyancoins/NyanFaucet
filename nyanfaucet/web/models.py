@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your models here.
 
@@ -14,9 +15,18 @@ class FaucetUser(BaseModel):
   address = models.CharField(max_length=48, unique=True)
   email = models.EmailField(unique=True) # @todo: for verification?
   last_roll = models.DateTimeField(auto_now=True)
+  balance = models.PositiveIntegerField(default=0)
 
   def __unicode__(self):
       return self.email
+
+  @staticmethod
+  def find_by_address(addr):
+    try:
+        usr = FaucetUser.objects.get(address=addr)
+        return usr
+    except ObjectDoesNotExist:
+        return None
 
 
 class Roll(BaseModel):

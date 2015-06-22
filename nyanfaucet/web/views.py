@@ -152,6 +152,8 @@ class PlayView(generic.FormView):
 
         r = Roll(user=usr, value=diceroll, clientseed=cs, serverseed=ss, nonce=nonce, winnings=winnings)
         r.save()
+
+        usr.balance += winnings
         usr.save()
 
         return super(PlayView, self).form_valid(form)
