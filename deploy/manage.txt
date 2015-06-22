@@ -1,0 +1,5 @@
+#python manage.py makemigrations --settings nyanfaucet.settings.testing
+python manage.py migrate --settings nyanfaucet.settings.testing
+python manage.py createcachetable --settings nyanfaucet.settings.testing
+python manage.py collectstatic --settings nyanfaucet.settings.testing
+python manage.py 

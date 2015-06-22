@@ -1,6 +1,6 @@
 from django import forms
 
-from web.btc import validate_nyan
+from cryptocoin.validation import validate_nyan
 from web.models import FaucetUser
 
 class BtcAddressField(forms.CharField):

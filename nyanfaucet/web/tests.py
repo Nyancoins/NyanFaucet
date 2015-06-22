@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from web.btc import validate
+from cryptocoin.validation import validate
 from dice import CalculateWinnings
 
 # Create your tests here.
