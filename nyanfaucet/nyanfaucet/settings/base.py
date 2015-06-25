@@ -16,7 +16,9 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 NYAN_ROLL_INTERVAL = 60*1  # seconds between rolls
-RPC_URL = r'http://nyan:nyannyan@127.0.0.1:33700'
+
+# Chanage this to match your nyancoin.conf rpcuser and rpcpass!
+RPC_URL = r'http://nyan:nyan@127.0.0.1:33700'
 
 
 # Quick-start development settings - unsuitable for production

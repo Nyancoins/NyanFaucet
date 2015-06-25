@@ -12,7 +12,15 @@ def faucet_balance():
     c = caches['default']
     b = c.get('faucet_balance', None)
     if b is None:
-        b = get_faucet_balance()
+        b = None
+        try:
+            b = get_faucet_balance()
+        except Exception as ex:
+            print ex
+
+        if b is None:
+            b = "[RPC Error]"
+
         c.set('faucet_balance', b, 60)
 
     return intcomma(b)

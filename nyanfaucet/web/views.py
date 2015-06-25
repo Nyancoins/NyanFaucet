@@ -205,7 +205,7 @@ class WithdrawView(generic.FormView):
         try:
             tx = send_nyan(usr.address, amount)
         except Exception as ex:
-            messages.error(self.request, "Failed to issue transaction: " + str(ex))
+            messages.error(self.request, "Failed to issue transaction: " + str(ex) + " - please try again later. If the error persists, please send me an email!", 'danger')
             c['withdrawal_ok'] = False
             return self.render_to_response(c, **kwargs)
 
