@@ -36,5 +36,51 @@ input[type=text] {
 }
 */
 
+/* NyanCheque */
+.nyancheque {
+    width:640px;
+    height:290px;
+    background-image: url(/static/img/NyanCheque_640.png);
+    background-repeat:no-repeat;
+    position:relative;
+    font-weight:bold;
+    font-family:Tahoma;
+}
+
+.nyancheque > #serial {
+    position:relative;
+    top:35px;
+    left:560px;
+    -webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+
+    /* Rules below not implemented in browsers yet */
+    -o-user-select: none;
+    user-select: none;
+}
+
+.nyancheque > #orderto {
+    position:relative;
+    top:85px;
+    left:100px;
+}
+
+.nyancheque > #amount {
+    position:relative;
+    top:66px;
+    left:505px;
+}
+
+.nyancheque > #amount-words {
+    position:relative;
+    top:72px;
+    left:40px;
+    width:430px;
+    text-align:right;
+    font-family:cursive;
+    font-size:large;
+}
+
 
 

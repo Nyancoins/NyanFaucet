@@ -11,10 +11,11 @@ from django.http import HttpResponseForbidden
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
 
-from web.forms import LoginForm, RegisterForm, RollForm
+from web.forms import LoginForm, RegisterForm, RollForm, WithdrawForm
 from web.models import FaucetUser, Roll, Withdrawal
 
 from dice import RollDice, CalculateWinnings, WINNINGS_MULTIPLIERS
+from cryptocoin.rpc import send as send_nyan
 
 # Create your views here.
 
@@ -57,6 +58,8 @@ class LoginView(generic.FormView):
             self.request.session.flush()
             messages.error(self.request, "Could not find an account for this address, please double check the address or sign up for a new account.", 'danger')
             return redirect('login')
+        else:
+            usr.update_balance()
 
         self.request.session['address'] = addr
 
@@ -112,11 +115,13 @@ class PlayView(generic.FormView):
         nonce = usr.rolls.count() +1
 
         if usr.rolls.count() > 0:
-            nextroll = ((usr.last_roll - datetime.utcnow().replace(tzinfo=utc)) + timedelta(seconds=settings.NYAN_ROLL_INTERVAL)).total_seconds()
+            nextroll = ((usr.last_roll - datetime.now(utc)) + timedelta(seconds=settings.NYAN_ROLL_INTERVAL)).total_seconds()
             lr = usr.rolls.last()
             ctx['nextroll'] = nextroll
             ctx['lastroll'] = lr.value
             ctx['lastwinnings'] = lr.winnings
+        else:
+            ctx['nextroll'] = 0
 
         ctx['nonce'] = nonce
 
@@ -152,15 +157,12 @@ class PlayView(generic.FormView):
 
         r = Roll(user=usr, value=diceroll, clientseed=cs, serverseed=ss, nonce=nonce, winnings=winnings)
         r.save()
-
-        usr.balance += winnings
         usr.save()
 
         return super(PlayView, self).form_valid(form)
 
 class HistoryView(generic.TemplateView):
     template_name = "history.html"
-    model = FaucetUser
 
     @method_decorator(nyan_login_required)
     def dispatch(self, *args, **kwargs):
@@ -174,3 +176,42 @@ class HistoryView(generic.TemplateView):
         context['withdrawals'] = usr.withdrawals.order_by('-pk').all()[:30]
         context['rolls'] = usr.rolls.order_by('-pk').all()[:30]
         return context
+
+class WithdrawView(generic.FormView):
+    template_name = "withdraw.html"
+    form_class = WithdrawForm
+    success_url = '/withdraw'
+
+    @method_decorator(nyan_login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(WithdrawView, self).dispatch(*args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super(WithdrawView, self).get_form_kwargs()
+        kwargs.update({
+            'usr': FaucetUser.objects.get(address=self.request.session['address']),
+        })
+        return kwargs
+
+    def form_valid(self, form, **kwargs):
+        c = self.get_context_data(**kwargs)
+        c['withdrawal_ok'] = True
+        c['form'] = form
+
+        amount = form.cleaned_data['amount']
+
+        usr = FaucetUser.objects.get(address=self.request.session['address'])
+
+        try:
+            tx = send_nyan(usr.address, amount)
+        except Exception as ex:
+            messages.error(self.request, "Failed to issue transaction: " + str(ex))
+            c['withdrawal_ok'] = False
+            return self.render_to_response(c, **kwargs)
+
+        w = Withdrawal(user=usr, transaction=tx, amount=amount)
+        w.save()
+
+        return self.render_to_response(c, **kwargs)
+
+

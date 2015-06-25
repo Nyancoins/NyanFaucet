@@ -145,6 +145,10 @@
     <Content Include="nyanfaucet\static\css\main.css" />
     <Content Include="nyanfaucet\static\favicon.ico" />
     <Content Include="nyanfaucet\static\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="nyanfaucet\static\img\background.png" />
+    <Content Include="nyanfaucet\static\img\logo.png" />
+    <Content Include="nyanfaucet\static\img\NyanCheque_640.png" />
+    <Content Include="nyanfaucet\static\img\sleepy_by_Nyan-Tortik.png" />
     <Content Include="nyanfaucet\static\js\main.js" />
     <Content Include="nyanfaucet\static\js\vendor\bootstrap.js" />
     <Content Include="nyanfaucet\static\js\vendor\bootstrap.min.js" />
@@ -172,6 +176,7 @@
     <Content Include="nyanfaucet\web\static\robots.txt" />
     <Content Include="nyanfaucet\web\static\tile-wide.png" />
     <Content Include="nyanfaucet\web\static\tile.png" />
+    <Content Include="nyanfaucet\web\templates\cheque.html" />
     <Content Include="nyanfaucet\web\templates\history.html" />
     <Content Include="nyanfaucet\web\templates\account_rolls.html" />
     <Content Include="nyanfaucet\web\templates\account_withdrawals.html" />
@@ -182,6 +187,7 @@
     <Content Include="nyanfaucet\web\templates\navbar.html" />
     <Content Include="nyanfaucet\web\templates\play.html" />
     <Content Include="nyanfaucet\web\templates\register.html" />
+    <Content Include="nyanfaucet\web\templates\withdraw.html" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="nyanfaucet" />
@@ -198,6 +204,7 @@
     <Folder Include="nyanfaucet\static\admin\js\admin" />
     <Folder Include="nyanfaucet\static\css" />
     <Folder Include="nyanfaucet\static\fonts" />
+    <Folder Include="nyanfaucet\static\img\" />
     <Folder Include="nyanfaucet\static\js" />
     <Folder Include="nyanfaucet\static\js\vendor" />
     <Folder Include="nyanfaucet\web" />

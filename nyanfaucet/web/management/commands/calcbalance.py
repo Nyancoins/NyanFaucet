@@ -10,14 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for u in FaucetUser.objects.all():
-            balance = 0
-            for r in u.rolls.all():
-                balance += r.winnings
-
-            for w in u.withdrawals.all():
-                balance -= w.amount
-                
-            u.balance = balance
+            u.balance = u.calc_balance()
             if not options['quiet']:
-                print "%s has a balance of %f NYAN" % (str(u), balance)
+                print "%s - %f NYAN" % (str(u), u.balance)
             u.save()

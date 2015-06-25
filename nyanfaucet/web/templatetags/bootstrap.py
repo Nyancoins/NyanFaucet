@@ -8,3 +8,12 @@ def navactive(request, urls):
     if request.path in ( reverse(url) for url in urls.split() ):
         return "active"
     return ""
+
+@register.simple_tag
+def form_error(err):
+    return """
+    <div class="alert alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Alert!</strong> %s
+    </div>
+    """ % (err,)

@@ -1,4 +1,4 @@
-﻿{% load bootstrap %} {% load faucet %}
+﻿{% load bootstrap %} {% load account_helpers %}
 
 <ul class="nav navbar-nav">
     <li class="{% navactive request 'default' %}"><a href="{% url 'default'%}">About</a></li>
@@ -9,7 +9,7 @@
 
 {% if request.session.address %}
 <ul class="nav navbar-nav navbar-right">
-    <li><p class="navbar-text">{% balance request %} NYAN</p></li>
+    <li><p class="navbar-text">Your balance: <strong>{% balance request %} NYAN</strong></p></li>
     <li></li>
     <li>
         <div class="navbar-form navbar-right">

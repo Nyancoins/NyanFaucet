@@ -15,10 +15,10 @@ class BtcAddressField(forms.CharField):
 
 class LoginForm(forms.Form):
     address = BtcAddressField(required=True, label='NyanCoin Address')
-    remember_me = forms.BooleanField(required=False, initial=False)
+    remember_me = forms.BooleanField(required=False, initial=True)
 
 class RegisterForm(forms.ModelForm):
-    remember_me = forms.BooleanField(required=False, initial=False)
+    remember_me = forms.BooleanField(required=False, initial=True)
 
     class Meta:
         model = FaucetUser
@@ -32,4 +32,20 @@ class RegisterForm(forms.ModelForm):
 
 class RollForm(forms.Form):
     seed = forms.CharField(max_length=32)
+
+class WithdrawForm(forms.Form):
+    amount = forms.FloatField()
+
+    def __init__(self, usr, *args, **kwargs):
+        super(WithdrawForm, self).__init__(*args, **kwargs)
+        self.usr = usr
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount < 10:
+            raise forms.ValidationError("You need to withdraw at least 10 NYAN.")
+        if amount > self.usr.balance:
+            raise forms.ValidationError("You cannot withdraw more than you have!")
+        
+        return amount
     

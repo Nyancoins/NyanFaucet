@@ -28,6 +28,6 @@ urlpatterns = [
   url(r'^logout$', views.LogoutView.as_view(), name='logout'),
 
   url(r'^play$', views.PlayView.as_view(), name='play'),
-  url(r'^withdraw$', views.DefaultView.as_view(), name='withdraw'),
+  url(r'^withdraw$', views.WithdrawView.as_view(), name='withdraw'),
   url(r'^history', views.HistoryView.as_view(), name='account'),
 ]

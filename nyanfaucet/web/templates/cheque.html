@@ -1,0 +1,7 @@
+﻿{% load account_helpers %}
+<div class="nyancheque">
+    <div id="serial">337</div>
+    <div id="orderto">{{ request.session.address }}</div>
+    <div id="amount">{{ form.cleaned_data.amount }}</div>
+    <div id="amount-words">{{ form.cleaned_data.amount|number2words }}</div>
+</div>
