@@ -1,5 +1,9 @@
+import logging
+import traceback
 from django.conf import settings
 from bitcoinrpc.authproxy import AuthServiceProxy
+
+log = logging.getLogger('django.request')
 
 sp = AuthServiceProxy(settings.RPC_URL)
 
@@ -12,8 +16,17 @@ def get_faucet_balance():
 
     return total, details"""
 
-    return sp.getbalance()
+    r = None
+    try:
+        r = sp.getbalance()
+    except Exception as err:
+        log.exception(err)
+    return r
 
 def send(addr, amount):
-    tx = sp.sendtoaddress(addr, amount)
+    tx = None
+    try:
+        tx = sp.sendtoaddress(addr, amount)
+    except Exception as err:
+        log.exception(err)
     return tx
