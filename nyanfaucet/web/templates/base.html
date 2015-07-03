@@ -55,7 +55,14 @@
         <hr>
 
         <footer>
-            <p>operated by <a target="_blank" href="https://www.reddit.com/user/vmp32k/">/u/vmp32k</a> - nyan.space - contact: <img src="{% static 'img/fa.svg' %}" onerror="this.src='{% static 'img/fa.png' %}'" /></p>
+            <script>
+                function contactImgOnError(img) {
+                    if(img.src.indexOf('.png') === -1) {
+                        img.src='{% static 'img/fa.png' %}';
+                    }
+                }
+            </script>
+            <p>operated by <a target="_blank" href="https://www.reddit.com/user/vmp32k/">/u/vmp32k</a> - nyan.space - contact: <img src="{% static 'img/fa.svg' %}" onerror="contactImgOnError(this)" /></p>
         </footer>
     </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
@@ -64,7 +71,6 @@
     <script src="{% static 'js/main.js' %}"></script>
     {% block js %}{% endblock %}
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
         (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
                                                                 function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
