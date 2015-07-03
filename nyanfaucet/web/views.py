@@ -202,15 +202,14 @@ class WithdrawView(generic.FormView):
 
         usr = FaucetUser.objects.get(address=self.request.session['address'])
 
-        try:
-            tx = send_nyan(usr.address, amount)
-        except Exception as ex:
-            messages.error(self.request, "Failed to issue transaction: " + str(ex) + " - please try again later. If the error persists, please send me an email!", 'danger')
+        tx = send_nyan(usr.address, amount)
+        if tx is None:
+            messages.error(self.request, "Failed to issue transaction, please try again later. If the error persists, please send me an email!", 'danger')
             c['withdrawal_ok'] = False
             return self.render_to_response(c, **kwargs)
-
-        w = Withdrawal(user=usr, transaction=tx, amount=amount)
-        w.save()
+        else:
+            w = Withdrawal(user=usr, transaction=tx, amount=amount)
+            w.save()
 
         return self.render_to_response(c, **kwargs)
 

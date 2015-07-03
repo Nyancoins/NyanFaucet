@@ -2,6 +2,7 @@ from django import template
 from django.core.urlresolvers import reverse
 from django.core.cache import caches
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.utils.safestring import SafeString
 
 from cryptocoin.rpc import get_faucet_balance
 
@@ -15,7 +16,7 @@ def faucet_balance():
         b = get_faucet_balance()
 
         if b is None:
-            return "Unavailable (RPC error)"
+            return SafeString("<strong>Unavailable</strong> <i>(RPC failure)</i>")
 
         c.set('faucet_balance', b, 60)
 
