@@ -38,7 +38,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'default' %}">NyanFaucet</a>
+                <a class="navbar-brand" href="{% url 'default' %}" data-no-instant>NyanFaucet</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 {% include 'navbar.html' %}
@@ -71,6 +71,7 @@
     <script src="{% static 'js/main.js' %}"></script>
     {% block js %}{% endblock %}
 
+    <script src="{% static 'js/instantclick.min.js' %}" data-no-instant></script><script data-no-instant>InstantClick.init('mousedown');</script>
     <script>
         (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
                                                                 function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
