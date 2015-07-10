@@ -102,6 +102,7 @@
     <Content Include="nyanfaucet\web\static\img\logo.png" />
     <Content Include="nyanfaucet\web\static\img\NyanCheque_640.png" />
     <Content Include="nyanfaucet\web\static\img\sleepy_by_Nyan-Tortik.png" />
+    <Content Include="nyanfaucet\web\static\js\instantclick.min.js" />
     <Content Include="nyanfaucet\web\static\js\main.js" />
     <Content Include="nyanfaucet\web\static\js\nyandice.js" />
     <Content Include="nyanfaucet\web\static\js\vendor\bootstrap.js" />

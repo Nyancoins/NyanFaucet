@@ -16,6 +16,9 @@ from web.models import FaucetUser, Roll, Withdrawal
 
 from dice import RollDice, CalculateWinnings, WINNINGS_MULTIPLIERS
 from cryptocoin.rpc import send as send_nyan
+from cryptocoin.rpc import get_faucet_balance
+
+jackpot = settings.NYAN_JACKPOT # @todo set dynamically to some cash value
 
 # Create your views here.
 
@@ -124,8 +127,6 @@ class PlayView(generic.FormView):
             ctx['nextroll'] = 0
 
         ctx['nonce'] = nonce
-
-        jackpot = 1000000 # @todo set dynamically to some cash value
         ctx['jackpot'] = jackpot
 
         payout_table = []
@@ -152,7 +153,6 @@ class PlayView(generic.FormView):
         nonce = usr.rolls.count() +1
         diceroll, ss = RollDice(nonce, cs)
 
-        jackpot = 1000000 # @todo set dynamically to some cash value
         winnings = CalculateWinnings(diceroll, jackpot)
 
         r = Roll(user=usr, value=diceroll, clientseed=cs, serverseed=ss, nonce=nonce, winnings=winnings)

@@ -15,9 +15,13 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-NYAN_ROLL_INTERVAL = 60*1  # seconds between rolls
+# Seconds between rolls
+NYAN_ROLL_INTERVAL = 60*1  
 
-# Chanage this to match your nyancoin.conf rpcuser and rpcpass!
+# Most amount of NyanCoins that can be won by winning the jackpot
+NYAN_JACKPOT = 1000000
+
+# Change this to match your nyancoin.conf rpcuser and rpcpass!
 RPC_URL = r'http://nyan:nyan@127.0.0.1:33700'
 
 
@@ -25,7 +29,7 @@ RPC_URL = r'http://nyan:nyan@127.0.0.1:33700'
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'wwbu^ngksd6rj$)0*^87&%elp9(kbi*=(xpg8fyjs$%zaa298#'
+SECRET_KEY = r'wwbu^ngksd6rj$)0*^87&%elp9(kbi*=(xpg8fyjs$%zaa298#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -44,7 +48,7 @@ ADMINS = (
 # Uncomment and set value below to enable Django's email feature
 #SERVER_EMAIL = 'noreply@localhost'
 
-# Uncomment and change values below to use my Mandrill email backend
+# Uncomment and change values below to use custom Mandrill email backend
 #EMAIL_BACKEND = 'nyanfaucet.nyandrill.MandrillBackend'
 #MANDRILL_SECRET = 'yT39LKGnJCz7JtGof7N9fw' # See: https://mandrillapp.com/settings/index
 

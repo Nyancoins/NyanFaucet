@@ -11,9 +11,18 @@ def navactive(request, urls):
 
 @register.simple_tag
 def form_error(err):
-    return """
+    if not err:
+        return ""
+
+    if type(err) is list:
+        c = ""
+        for e in err:
+            c += form_error(e)
+        return c
+    else:
+        return """
     <div class="alert alert-danger">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        <strong>Alert!</strong> %s
+        <strong>Error</strong> %s
     </div>
     """ % (err,)

@@ -1,5 +1,6 @@
 from django import forms
 
+from cryptocoin.rpc import get_faucet_balance
 from cryptocoin.validation import validate_nyan
 from web.models import FaucetUser
 
@@ -48,4 +49,11 @@ class WithdrawForm(forms.Form):
             raise forms.ValidationError("You cannot withdraw more than you have!")
         
         return amount
+
+    def clean(self):
+        data = super(WithdrawForm, self).clean()
+
+        balance = get_faucet_balance()
+        if balance is not None and balance <= data.get('amount'):
+            raise forms.ValidationError("Well this is embarassing... the faucet does not have enough coins to process your withdrawal.")
     

@@ -8,13 +8,6 @@ log = logging.getLogger('django.request')
 sp = AuthServiceProxy(settings.RPC_URL)
 
 def get_faucet_balance():
-    """total = 0
-    details = []
-    for l in sp.listreceivedbyaddress():
-        total += l['amount']
-        details.append(dict(address=l['address'], amount=l['amount'], confirmations=l['confirmations']))
-
-    return total, details"""
 
     r = None
     try:
@@ -23,9 +16,21 @@ def get_faucet_balance():
         log.exception(err)
     return r
 
+    """total = 0
+    details = []
+    for l in sp.listreceivedbyaddress():
+        total += l['amount']
+        details.append(dict(address=l['address'], amount=l['amount'], confirmations=l['confirmations']))
+
+    return total, details"""
+
 def send(addr, amount):
     tx = None
     try:
+        balance = get_faucet_balance()
+        if balance is not None and amount > balance:
+            log.error("Tried to send %f but only have %f balance." % (amount, balance))
+            return None
         tx = sp.sendtoaddress(addr, amount)
     except Exception as err:
         log.exception(err)
