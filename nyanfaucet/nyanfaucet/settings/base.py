@@ -46,7 +46,7 @@ ADMINS = (
 )
 
 # Uncomment and set value below to enable Django's email feature
-#SERVER_EMAIL = 'noreply@localhost'
+SERVER_EMAIL = 'noreply-nyanfaucet@nyan.space'
 
 # Uncomment and change values below to use custom Mandrill email backend
 #EMAIL_BACKEND = 'nyanfaucet.nyandrill.MandrillBackend'

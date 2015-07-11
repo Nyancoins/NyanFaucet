@@ -17,6 +17,9 @@ from web.models import FaucetUser, Roll, Withdrawal
 from dice import RollDice, CalculateWinnings, WINNINGS_MULTIPLIERS
 from cryptocoin.rpc import send as send_nyan
 from cryptocoin.rpc import get_faucet_balance
+from django.core.mail import send_mail
+from django.utils.safestring import SafeText
+from django.core.urlresolvers import reverse
 
 jackpot = settings.NYAN_JACKPOT # @todo set dynamically to some cash value
 
@@ -61,9 +64,11 @@ class LoginView(generic.FormView):
             self.request.session.flush()
             messages.error(self.request, "Could not find an account for this address, please double check the address or sign up for a new account.", 'danger')
             return redirect('login')
-        else:
-            usr.update_balance()
 
+        if not usr.email_confirmed:
+            messages.warning(self.request, SafeText('Your account has not been confirmed yet, please click the link that has been sent to your email address or <a href="%s" class="btn btn-warning">resend activation link</a>' % (reverse('resend_activation'))), 'warning')
+        
+        usr.update_balance()
         self.request.session['address'] = addr
 
         ret = self.request.session.pop('return', None)
@@ -87,9 +92,11 @@ class RegisterView(generic.FormView):
         else:
             self.request.session.set_expiry(0)
 
-        usr = FaucetUser(address=addr, email=email)
+        usr = FaucetUser(address=addr, email=email, email_confirmed=False)
         usr.save()
+        usr.send_reg_confirm_mail()
 
+        messages.info(self.request, "We have sent you an email with a link, please follow it to confirm your registration.", 'info')
         self.request.session['address'] = addr
 
         return super(RegisterView, self).form_valid(form)
@@ -98,6 +105,22 @@ class LogoutView(generic.View):
     def get(self, request):
         request.session.flush()
         return redirect('default')
+
+class ActivationHelper(generic.View):
+
+    @method_decorator(nyan_login_required)
+    def dispatch(self, *args, **kwargs):
+        usr = FaucetUser.objects.get(address=self.request.session['address'])
+
+        if usr is not None:
+            if usr.email_confirmed is True:
+                messages.info(self.request, "Your account has already been activated.")
+            else:
+                messages.info(self.request, "We have sent you an email with a link, please follow it to confirm your registration.")
+                usr.send_reg_confirm_mail()
+
+        return redirect('play')
+
 
 class PlayView(generic.FormView):
     template_name = "play.html"
@@ -116,6 +139,10 @@ class PlayView(generic.FormView):
 
         usr = FaucetUser.objects.get(address=self.request.session['address'])
         nonce = usr.rolls.count() +1
+
+        if not usr.email_confirmed:
+            messages.warning(self.request, SafeText('Your account has not been confirmed yet, please click the link that has been sent to your email address or <a href="%s" class="btn btn-warning">resend activation link</a>' % (reverse('resend_activation'))), 'warning')
+        
 
         if usr.rolls.count() > 0:
             nextroll = ((usr.last_roll - datetime.now(utc)) + timedelta(seconds=settings.NYAN_ROLL_INTERVAL)).total_seconds()
@@ -184,6 +211,10 @@ class WithdrawView(generic.FormView):
 
     @method_decorator(nyan_login_required)
     def dispatch(self, *args, **kwargs):
+        usr = FaucetUser.objects.get(address=self.request.session['address'])
+        if not usr.email_confirmed:
+            messages.warning(self.request, SafeText('Your account has not been confirmed yet, please click the link that has been sent to your email address or <a href="%s" class="btn btn-warning">resend activation link</a>' % (reverse('resend_activation'))), 'warning')
+        
         return super(WithdrawView, self).dispatch(*args, **kwargs)
 
     def get_form_kwargs(self):
