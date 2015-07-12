@@ -39,6 +39,9 @@
     <Compile Include="nyanfaucet\nyanfaucet\settings\testing.py" />
     <Compile Include="nyanfaucet\nyanfaucet\settings\production.py" />
     <Compile Include="nyanfaucet\nyanfaucet\settings\__init__.py" />
+    <Compile Include="nyanfaucet\nyanfaucet\strings.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="nyanfaucet\nyanfaucet\urls.py" />
     <Compile Include="nyanfaucet\nyanfaucet\wsgi.py" />
     <Compile Include="nyanfaucet\nyanfaucet\__init__.py" />

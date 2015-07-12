@@ -2,7 +2,7 @@
     {% for message in messages %}
     <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}danger{% endif %}">
     <button type="button" class="close" data-dismiss="alert">&times;</button>
-    <strong>Alert!</strong> {{ message }}
+    <strong><i class="fa fa-exclamation-triangle"></i></strong> {{ message }}
 </div>
     {% endfor %}
 {% endif %}

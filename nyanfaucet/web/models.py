@@ -4,6 +4,12 @@ from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime, timedelta
 from django.core.mail import send_mail
 
+from nyanfaucet.strings import CONFIRMATION_MAIL_SUBJECT, CONFIRMATION_MAIL_BODY
+import string
+import hashlib, binascii
+import os
+from django.core.urlresolvers import reverse
+
 # Create your models here.
 
 class BaseModel(models.Model):
@@ -20,6 +26,8 @@ class FaucetUser(BaseModel):
     last_roll = models.DateTimeField(default=datetime.now() - timedelta(-1))
     balance = models.PositiveIntegerField(default=0)
     email_confirmed = models.BooleanField(default=True)
+    email_confirm_nonce = models.CharField(max_length=64, blank=True, null=True, default=None)
+    enabled = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.email
@@ -43,8 +51,22 @@ class FaucetUser(BaseModel):
             self.save()
 
     def send_reg_confirm_mail(self):
-        send_mail("Activate your NyanFaucet account", "Please confirm your registration by clicking this link: <link>", settings.SERVER_EMAIL, [self.email])
-        # todo: make prettier, add link
+        """
+        @ToDo:
+          - send_mail cooldown !!!
+          - absolute reverse url resolution for /
+        """
+        
+        if self.email_confirm_nonce is None or len(self.email_confirm_nonce) < 64:
+            nonce = hashlib.pbkdf2_hmac('sha256', self.address + self.email, bytes(os.urandom(32)), 1000)
+            self.email_confirm_nonce = binascii.hexlify(nonce)
+            self.save()
+
+        link = reverse('activation_helper', kwargs=dict(nonce=self.email_confirm_nonce))
+        tpl = string.Template(CONFIRMATION_MAIL_BODY)
+        body = tpl.substitute(dict(link=link))
+
+        return send_mail(CONFIRMATION_MAIL_SUBJECT, body, settings.SERVER_EMAIL, [self.email])
 
     @staticmethod
     def find_by_address(addr):
@@ -74,7 +96,10 @@ class Roll(BaseModel):
         self.user.save()
 
 class Withdrawal(BaseModel):
-    # Model for storing withdrawals for each FaucetUser
+    """Model for storing withdrawals for each FaucetUser
+    @ToDo: 
+      - Withdrawal cooldown !!!
+    """
     amount = models.PositiveIntegerField()
     transaction = models.CharField(max_length=64)
     user = models.ForeignKey(FaucetUser, related_name='withdrawals')

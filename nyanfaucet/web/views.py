@@ -20,6 +20,8 @@ from cryptocoin.rpc import get_faucet_balance
 from django.core.mail import send_mail
 from django.utils.safestring import SafeText
 from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseRedirect
+from nyanfaucet.strings import ACCOUNT_DISABLED, INVALID_SESSION, LOGIN_REQUIRED, ACCOUNT_NOT_FOUND, ACCOUNT_CONFIRMATION_SENT, ACCOUNT_ALREADY_ACTIVATED, INVALID_ACTIVATION_LINK, SAFE_ACCOUNT_NOT_YET_CONFIRMED, DICE_ALREADY_ROLLED, WITHDRAWAL_FAILED, ACCOUNT_ACTIVATED
 
 jackpot = settings.NYAN_JACKPOT # @todo set dynamically to some cash value
 
@@ -30,9 +32,26 @@ def nyan_login_required(function=None):
     def wrapper(request, *args, **kwargs):
         s = request.session
         if 'address' not in s:
-            messages.warning(request, 'Please sign in first.', 'warning')
+            messages.warning(request, LOGIN_REQUIRED)
             s['return'] = request.get_full_path()
             return redirect('login')
+        else:
+            try:
+                usr = FaucetUser.objects.get(address=s['address'])
+                if usr.enabled == False:
+                    s.flush()
+                    messages.warning(request, ACCOUNT_DISABLED)
+                    return redirect('default')
+                
+                if not usr.email_confirmed:
+                    messages.warning(request, SafeText(SAFE_ACCOUNT_NOT_YET_CONFIRMED % (reverse('activation_helper'))))
+            except ObjectDoesNotExist:
+                usr = None
+                messages.warning(request, INVALID_SESSION, 'danger')
+                s.flush()
+                s['return'] = request.get_full_path()
+                return redirect('login')
+
         return function(request, *args, **kwargs)
     return wrapper
        
@@ -62,11 +81,8 @@ class LoginView(generic.FormView):
         if usr is None:
             # @todo: Transparently create account?
             self.request.session.flush()
-            messages.error(self.request, "Could not find an account for this address, please double check the address or sign up for a new account.", 'danger')
+            messages.error(self.request, ACCOUNT_NOT_FOUND, 'danger')
             return redirect('login')
-
-        if not usr.email_confirmed:
-            messages.warning(self.request, SafeText('Your account has not been confirmed yet, please click the link that has been sent to your email address or <a href="%s" class="btn btn-warning">resend activation link</a>' % (reverse('resend_activation'))), 'warning')
         
         usr.update_balance()
         self.request.session['address'] = addr
@@ -96,7 +112,7 @@ class RegisterView(generic.FormView):
         usr.save()
         usr.send_reg_confirm_mail()
 
-        messages.info(self.request, "We have sent you an email with a link, please follow it to confirm your registration.", 'info')
+        messages.info(self.request, ACCOUNT_CONFIRMATION_SENT)
         self.request.session['address'] = addr
 
         return super(RegisterView, self).form_valid(form)
@@ -114,12 +130,23 @@ class ActivationHelper(generic.View):
 
         if usr is not None:
             if usr.email_confirmed is True:
-                messages.info(self.request, "Your account has already been activated.")
+                messages.info(self.request, ACCOUNT_ALREADY_ACTIVATED)
             else:
-                messages.info(self.request, "We have sent you an email with a link, please follow it to confirm your registration.")
-                usr.send_reg_confirm_mail()
+                nonce = self.kwargs.get('nonce', None)
+                if nonce is not None:
+                    if nonce == usr.email_confirm_nonce:
+                        usr.email_confirmed = True
+                        usr.save()
+                        messages.info(self.request, ACCOUNT_ACTIVATED)
+                    else:
+                        messages.error(self.request, INVALID_ACTIVATION_LINK, 'danger')
+                        self.request.session.flush()
+                        return HttpResponseRedirect(reverse('default'))
+                else:
+                    messages.info(self.request, ACCOUNT_CONFIRMATION_SENT)
+                    usr.send_reg_confirm_mail()
 
-        return redirect('play')
+        return reverse('play')
 
 
 class PlayView(generic.FormView):
@@ -139,9 +166,6 @@ class PlayView(generic.FormView):
 
         usr = FaucetUser.objects.get(address=self.request.session['address'])
         nonce = usr.rolls.count() +1
-
-        if not usr.email_confirmed:
-            messages.warning(self.request, SafeText('Your account has not been confirmed yet, please click the link that has been sent to your email address or <a href="%s" class="btn btn-warning">resend activation link</a>' % (reverse('resend_activation'))), 'warning')
         
 
         if usr.rolls.count() > 0:
@@ -174,7 +198,7 @@ class PlayView(generic.FormView):
         if usr.rolls.count() > 0:
             nextroll = ((usr.last_roll - datetime.utcnow().replace(tzinfo=utc)) + timedelta(seconds=settings.NYAN_ROLL_INTERVAL)).total_seconds()
             if nextroll >= 0:
-                return HttpResponseForbidden("You already rolled the dice once this round!")
+                return HttpResponseForbidden(DICE_ALREADY_ROLLED)
 
         # Roll dice
         nonce = usr.rolls.count() +1
@@ -210,11 +234,7 @@ class WithdrawView(generic.FormView):
     success_url = '/withdraw'
 
     @method_decorator(nyan_login_required)
-    def dispatch(self, *args, **kwargs):
-        usr = FaucetUser.objects.get(address=self.request.session['address'])
-        if not usr.email_confirmed:
-            messages.warning(self.request, SafeText('Your account has not been confirmed yet, please click the link that has been sent to your email address or <a href="%s" class="btn btn-warning">resend activation link</a>' % (reverse('resend_activation'))), 'warning')
-        
+    def dispatch(self, *args, **kwargs):        
         return super(WithdrawView, self).dispatch(*args, **kwargs)
 
     def get_form_kwargs(self):
@@ -235,7 +255,7 @@ class WithdrawView(generic.FormView):
 
         tx = send_nyan(usr.address, amount)
         if tx is None:
-            messages.error(self.request, "Failed to issue transaction, please try again later. If the error persists, please send me an email!", 'danger')
+            messages.error(self.request, WITHDRAWAL_FAILED, 'danger')
             c['withdrawal_ok'] = False
             return self.render_to_response(c, **kwargs)
         else:
