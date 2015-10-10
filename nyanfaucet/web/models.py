@@ -1,4 +1,4 @@
-from django.db import models
+﻿from django.db import models
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from datetime import datetime, timedelta
@@ -92,7 +92,7 @@ class Roll(BaseModel):
     def save(self, *args, **kwargs):
         super(Roll, self).save(*args, **kwargs)
         self.user.balance += self.winnings
-        self.user.last_roll = datetime.now()
+        self.user.last_roll = datetime.utcnow()
         self.user.save()
 
 class Withdrawal(BaseModel):

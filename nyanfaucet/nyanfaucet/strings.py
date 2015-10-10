@@ -1,4 +1,4 @@
-from django.utils.translation import ugettext as _
+﻿from django.utils.translation import ugettext as _
 
 CONFIRMATION_MAIL_SUBJECT = _("Activate your NyanFaucet account")
 CONFIRMATION_MAIL_BODY = _("""Greetings!
@@ -21,3 +21,6 @@ SAFE_ACCOUNT_NOT_YET_CONFIRMED = _('Your account has not been confirmed yet, ple
 DICE_ALREADY_ROLLED = _("You already rolled the dice once this round!")
 
 WITHDRAWAL_FAILED =_("Failed to issue transaction, please try again later. If the error persists, please send an email to the faucet operator! (see footer)")
+
+CAPTCHA_UNSOLVED = _("You did not solve the reCAPTCHA.")
+CAPTCHA_ERROR = _("reCAPTCHA error")

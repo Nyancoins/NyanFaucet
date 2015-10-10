@@ -7,7 +7,14 @@
 
     <div class="col-md-7">
         {% if nextroll <= 1 %}
-        <p><button class="btn btn-success btn-lg" type="button" id="cmdRoll">Roll dice</button></p>
+            {% for error in form.recaptcha.errors %}
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                <strong>Alert!</strong> {{ error|escape }}
+            </div>
+            {% endfor %}
+            <p><button class="btn btn-success btn-lg" type="button" id="cmdRoll">Roll dice</button></p>
+            <div class="g-recaptcha" data-sitekey="6LehjA4TAAAAAKrYhOerufKSiCgZbg6tG2i9_U8l"></div>
         {% else %}
         
         <h2>You rolled {{lastroll|stringformat:"05d"}} and win {{lastwinnings|intcomma}} NYAN!</h2>
@@ -54,37 +61,59 @@
 
 {% block js %}
 <script>
-    var clientseed = Math.random().toString(36).replace(/[^a-zA-Z0-9]+/g, '').substr(0, 32);
-    $('input#clientseed').val(clientseed);
-    $('span#nonce').text("{{nonce}}");
+    (function (n, r) {
+        var clientseed = Math.random().toString(36).replace(/[^a-zA-Z0-9]+/g, '').substr(0, 32);
+        $('input#clientseed').val(clientseed);
+        $('span#nonce').text(n);
 
-    (function () {
-        var nextroll = parseFloat("{{nextroll}}");
+        (function () {
+            var nextroll = parseFloat(r);
 
-        var unixtime = (function () {
-            return Math.floor(new Date().getTime());
-        });
+            var unixtime = (function () {
+                return Math.floor(new Date().getTime());
+            });
 
-        var updateTimer = function () {
-            var delta = ((end - unixtime()) / 1000).toFixed(2);
-            if (delta <= 0) {
-                setTimeout(function () {
-                    location.reload();
-                }, 100);
-            } else {
-                txtTimeLeft.textContent = delta;
+            var updateTimer = function () {
+                var delta = ((end - unixtime()) / 1000).toFixed(2);
+                if (delta <= 0) {
+                    setTimeout(function () {
+                        location.reload();
+                    }, 100);
+                } else {
+                    txtTimeLeft.textContent = delta;
+                    setTimeout(updateTimer, 1000 / 15);
+                }
+            }
+
+            var end = 0;
+            var txtTimeLeft = $('span#timeleft')[0];
+
+            if (nextroll > 0) {
+                end = unixtime() + (nextroll * 1000);
                 setTimeout(updateTimer, 1000 / 15);
             }
-        }
+        })();
 
-        var end = 0;
-        var txtTimeLeft = $('span#timeleft')[0];
+        var cmdRoll = $('#cmdRoll');
+        cmdRoll.prop('disabled', false);
+        cmdRoll.click(function (e) {
+            e.preventDefault();
+            cmdRoll.attr('disabled', 'disabled');
+            console.log("Rock 'n' roll!");
 
-        if (nextroll > 0) {
-            end = unixtime() + (nextroll * 1000);
-            setTimeout(updateTimer, 1000 / 15);
-        }
-    })();    
+            $.post("/play", {
+                seed: clientseed,
+                recaptcha: grecaptcha.getResponse()
+            }).done(function (res) {
+                //console.log(res);
+                location.reload();
+            }).fail(function (err) {
+                console.log(err);
+                alert("Roll failed: " + err.status + " - " + err.responseText);
+                location.reload();
+            });
+        });
+    })("{{nonce}}", "{{nextroll}}");
 </script>
 <script src="{% static 'js/nyandice.js' %}"></script>
 {% endblock %}

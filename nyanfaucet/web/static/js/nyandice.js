@@ -1,18 +1,2 @@
 ﻿
-var cmdRoll = $('#cmdRoll');
-cmdRoll.prop('disabled', false);
-cmdRoll.click(function (e) {
-    e.preventDefault();
-    cmdRoll.attr('disabled', 'disabled');
-    console.log("Rock 'n' roll!");
 
-    $.post("/play", {
-        seed: clientseed
-    }).done(function (res) {
-        location.reload();
-    }).fail(function (err) {
-        console.log(err);
-        alert("Roll failed: " + err.status + " - " + err.responseText);
-        location.reload();
-    });
-});

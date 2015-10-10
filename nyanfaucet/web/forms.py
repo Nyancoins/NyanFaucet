@@ -1,8 +1,12 @@
-from django import forms
+﻿from django import forms
 
 from cryptocoin.rpc import get_faucet_balance
 from cryptocoin.validation import validate_nyan
 from web.models import FaucetUser
+
+from nyanfaucet.strings import CAPTCHA_UNSOLVED, CAPTCHA_ERROR
+
+import requests
 
 class BtcAddressField(forms.CharField):
     def validate(self, value):
@@ -11,6 +15,17 @@ class BtcAddressField(forms.CharField):
             raise forms.ValidationError("The address you have entered is NOT valid! A valid address looks like this: KQm7yxJ4EWoohRHv3NaSH8VMxT3owf1oWk")
         return super(BtcAddressField, self).validate(value)
 
+class RecaptchaField(forms.CharField):
+    def validate(self, value):
+        if value is None or value == "":
+            raise forms.ValidationError(CAPTCHA_UNSOLVED)
+        r = requests.post("https://www.google.com/recaptcha/api/siteverify", dict(secret='6LehjA4TAAAAAEb6kMgGPvKzOiVx8vqzLsgn6wyh', response=value))
+        result = r.json()
+
+        if result['success'] == False:
+            raise forms.ValidationError(CAPTCHA_ERROR)
+
+        return super(RecaptchaField, self).validate(value)
 
 # Forms
 
@@ -33,6 +48,7 @@ class RegisterForm(forms.ModelForm):
 
 class RollForm(forms.Form):
     seed = forms.CharField(max_length=32)
+    recaptcha = RecaptchaField()
 
 class WithdrawForm(forms.Form):
     amount = forms.FloatField()

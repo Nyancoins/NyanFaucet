@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+﻿from django.shortcuts import render, redirect
 from django.views import generic
 #from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -6,7 +6,7 @@ from django.utils.decorators import method_decorator
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.conf import settings
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
@@ -54,6 +54,18 @@ def nyan_login_required(function=None):
 
         return function(request, *args, **kwargs)
     return wrapper
+
+class AjaxableResponseMixin(object):
+    """
+    Mixin to add AJAX support to a form.
+    Must be used with an object-based FormView (e.g. CreateView)
+    """
+    def form_invalid(self, form):
+        response = super(AjaxableResponseMixin, self).form_invalid(form)
+        if self.request.is_ajax():
+            return JsonResponse(form.errors, status=400)
+        else:
+            return response
        
 
 class DefaultView(generic.TemplateView):
@@ -149,7 +161,7 @@ class ActivationHelper(generic.View):
         return reverse('play')
 
 
-class PlayView(generic.FormView):
+class PlayView(AjaxableResponseMixin, generic.FormView):
     template_name = "play.html"
     form_class = RollForm
     success_url = "/play"
