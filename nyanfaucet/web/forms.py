@@ -24,6 +24,7 @@ class RecaptchaField(forms.CharField):
         result = r.json()
 
         if result['success'] == False:
+            print result
             raise forms.ValidationError(CAPTCHA_ERROR)
 
         return super(RecaptchaField, self).validate(value)

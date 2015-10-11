@@ -1,20 +1,30 @@
-import logging
+﻿import logging
 import traceback
 from django.conf import settings
+from django.core.cache import caches
 from bitcoinrpc.authproxy import AuthServiceProxy
 
 log = logging.getLogger('django.request')
 
 sp = AuthServiceProxy(settings.RPC_URL)
 
-def get_faucet_balance():
+def get_faucet_balance(cached=True):
+    if cached == False:
+        return rpc_balance()
 
-    r = None
+    cache = caches['default']
+    b = cache.get('faucet_balance', None)
+    if b is None:
+        b = rpc_balance()
+        cache.set('faucet_balance', b, 60)
+    return b
+
+def rpc_balance():
+    b = None
     try:
-        r = sp.getbalance()
+        b = sp.getbalance()
     except Exception as err:
         log.exception(err)
-    return r
 
     """total = 0
     details = []
@@ -23,6 +33,8 @@ def get_faucet_balance():
         details.append(dict(address=l['address'], amount=l['amount'], confirmations=l['confirmations']))
 
     return total, details"""
+
+    return b
 
 def send(addr, amount):
     tx = None

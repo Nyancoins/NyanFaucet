@@ -1,6 +1,5 @@
-from django import template
+﻿from django import template
 from django.core.urlresolvers import reverse
-from django.core.cache import caches
 from django.contrib.humanize.templatetags.humanize import intcomma
 from django.utils.safestring import SafeString
 
@@ -10,14 +9,9 @@ register = template.Library()
 
 @register.simple_tag
 def faucet_balance():
-    c = caches['default']
-    b = c.get('faucet_balance', None)
+    b = get_faucet_balance()
+
     if b is None:
-        b = get_faucet_balance()
-
-        if b is None:
-            return SafeString("<strong>Unavailable</strong> <i>(RPC failure)</i>")
-
-        c.set('faucet_balance', b, 60)
+        return SafeString("<strong>Unavailable</strong> <i>(RPC failure)</i>")
 
     return intcomma(b) + " NYAN"
