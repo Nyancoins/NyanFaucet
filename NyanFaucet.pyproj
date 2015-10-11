@@ -124,6 +124,7 @@
     <Content Include="nyanfaucet\web\templates\account_withdrawals.html" />
     <Content Include="nyanfaucet\web\templates\base.html" />
     <Content Include="nyanfaucet\web\templates\default.html" />
+    <Content Include="nyanfaucet\web\templates\insufficient_balance.html" />
     <Content Include="nyanfaucet\web\templates\login.html" />
     <Content Include="nyanfaucet\web\templates\messages.html" />
     <Content Include="nyanfaucet\web\templates\navbar.html" />

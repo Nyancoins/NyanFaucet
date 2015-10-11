@@ -9,7 +9,7 @@
 
 {% if request.session.address %}
 <ul class="nav navbar-nav navbar-right">
-    <li><p class="navbar-text">Your balance: <strong>{% balance request %} NYAN</strong></p></li>
+    <li><p class="navbar-text">Your balance: <strong>{{ balance }} NYAN</strong></p></li>
     <li></li>
     <li>
         <div class="navbar-form navbar-right">

@@ -1,4 +1,4 @@
-from django import template
+﻿from django import template
 from django.core.urlresolvers import reverse
 
 from web.models import FaucetUser
@@ -14,7 +14,7 @@ def list_withdrawals(withdrawals):
     return { 'withdrawals': withdrawals }
 
 @register.simple_tag
-def balance(request):
+def getbalance(request):
     if 'address' not in request.session:
         return 'error'
 

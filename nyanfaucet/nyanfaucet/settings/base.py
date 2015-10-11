@@ -21,6 +21,10 @@ NYAN_ROLL_INTERVAL = 60*1
 # Most amount of NyanCoins that can be won by winning the jackpot
 NYAN_JACKPOT = 1000000
 
+# Minimum faucet balance needed for players to be able to play. 
+# @todo: include coins won but not withdrawn yet!
+NYAN_MINBALANCE = 1000
+
 # Change this to match your nyancoin.conf rpcuser and rpcpass!
 RPC_URL = r'http://nyan:nyannyan@127.0.0.1:33700'
 

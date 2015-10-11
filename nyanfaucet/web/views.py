@@ -18,7 +18,7 @@ from dice import RollDice, CalculateWinnings, WINNINGS_MULTIPLIERS
 from cryptocoin.rpc import send as send_nyan
 from cryptocoin.rpc import get_faucet_balance
 from django.core.mail import send_mail
-from django.utils.safestring import SafeText
+from django.utils.safestring import SafeString
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from nyanfaucet.strings import ACCOUNT_DISABLED, INVALID_SESSION, LOGIN_REQUIRED, ACCOUNT_NOT_FOUND, ACCOUNT_CONFIRMATION_SENT, ACCOUNT_ALREADY_ACTIVATED, INVALID_ACTIVATION_LINK, SAFE_ACCOUNT_NOT_YET_CONFIRMED, DICE_ALREADY_ROLLED, WITHDRAWAL_FAILED, ACCOUNT_ACTIVATED
@@ -44,7 +44,7 @@ def nyan_login_required(function=None):
                     return redirect('default')
                 
                 if not usr.email_confirmed:
-                    messages.warning(request, SafeText(SAFE_ACCOUNT_NOT_YET_CONFIRMED % (reverse('activation_helper'))))
+                    messages.warning(request, SafeString(SAFE_ACCOUNT_NOT_YET_CONFIRMED % (reverse('activation_helper'))))
             except ObjectDoesNotExist:
                 usr = None
                 messages.warning(request, INVALID_SESSION, 'danger')
@@ -66,9 +66,19 @@ class AjaxableResponseMixin(object):
             return JsonResponse(form.errors, status=400)
         else:
             return response
+
+class NyanFaucetMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(NyanFaucetMixin, self).get_context_data(**kwargs)
+
+        context['faucetbalance'] = get_faucet_balance() or SafeString("<strong>Unavailable</strong> <i>(RPC failure)</i>")
+        context['faucetminbalance'] = settings.NYAN_MINBALANCE
+        context['balance'] = FaucetUser.objects.get(address=self.request.session['address']).balance
+
+        return context
        
 
-class DefaultView(generic.TemplateView):
+class DefaultView(NyanFaucetMixin, generic.TemplateView):
 	template_name = "default.html"
 
 class LoginView(generic.FormView):
@@ -161,7 +171,7 @@ class ActivationHelper(generic.View):
         return reverse('play')
 
 
-class PlayView(AjaxableResponseMixin, generic.FormView):
+class PlayView(NyanFaucetMixin, AjaxableResponseMixin, generic.FormView):
     template_name = "play.html"
     form_class = RollForm
     success_url = "/play"
@@ -240,7 +250,7 @@ class HistoryView(generic.TemplateView):
         context['rolls'] = usr.rolls.order_by('-pk').all()[:30]
         return context
 
-class WithdrawView(generic.FormView):
+class WithdrawView(NyanFaucetMixin, generic.FormView):
     template_name = "withdraw.html"
     form_class = WithdrawForm
     success_url = '/withdraw'
@@ -250,6 +260,9 @@ class WithdrawView(generic.FormView):
         return super(WithdrawView, self).dispatch(*args, **kwargs)
 
     def get_form_kwargs(self):
+        """
+        This is needed for form validation (?)
+        """
         kwargs = super(WithdrawView, self).get_form_kwargs()
         kwargs.update({
             'usr': FaucetUser.objects.get(address=self.request.session['address']),
