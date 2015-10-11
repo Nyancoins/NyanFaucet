@@ -1,10 +1,11 @@
 ﻿from django import forms
+from django.conf import settings
 
 from cryptocoin.rpc import get_faucet_balance
 from cryptocoin.validation import validate_nyan
 from web.models import FaucetUser
 
-from nyanfaucet.strings import CAPTCHA_UNSOLVED, CAPTCHA_ERROR
+from nyanfaucet.strings import CAPTCHA_UNSOLVED, CAPTCHA_ERROR, INVALID_ADDRESS
 
 import requests
 
@@ -12,14 +13,14 @@ class BtcAddressField(forms.CharField):
     def validate(self, value):
         valid = validate_nyan(value)
         if valid is False:
-            raise forms.ValidationError("The address you have entered is NOT valid! A valid address looks like this: KQm7yxJ4EWoohRHv3NaSH8VMxT3owf1oWk")
+            raise forms.ValidationError(INVALID_ADDRESS)
         return super(BtcAddressField, self).validate(value)
 
 class RecaptchaField(forms.CharField):
     def validate(self, value):
         if value is None or value == "":
             raise forms.ValidationError(CAPTCHA_UNSOLVED)
-        r = requests.post("https://www.google.com/recaptcha/api/siteverify", dict(secret='6LehjA4TAAAAAEb6kMgGPvKzOiVx8vqzLsgn6wyh', response=value))
+        r = requests.post("https://www.google.com/recaptcha/api/siteverify", dict(secret=settings.RECAPTCHA_SECRET, response=value))
         result = r.json()
 
         if result['success'] == False:
@@ -43,7 +44,7 @@ class RegisterForm(forms.ModelForm):
     def clean_address(self):
         addr = self.cleaned_data['address']
         if validate_nyan(addr) is False:
-            raise forms.ValidationError("The address you have entered is NOT valid! A valid address looks like this: KQm7yxJ4EWoohRHv3NaSH8VMxT3owf1oWk")
+            raise forms.ValidationError(INVALID_ADDRESS)
         return addr
 
 class RollForm(forms.Form):

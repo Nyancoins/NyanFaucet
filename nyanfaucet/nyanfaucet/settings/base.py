@@ -24,6 +24,8 @@ NYAN_JACKPOT = 1000000
 # Change this to match your nyancoin.conf rpcuser and rpcpass!
 RPC_URL = r'http://nyan:nyannyan@127.0.0.1:33700'
 
+RECAPTCHA_SECRET = ''
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
