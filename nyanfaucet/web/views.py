@@ -73,7 +73,9 @@ class NyanFaucetMixin(object):
 
         context['faucetbalance'] = get_faucet_balance() or SafeString("<strong>Unavailable</strong> <i>(RPC failure)</i>")
         context['faucetminbalance'] = settings.NYAN_MINBALANCE
-        context['balance'] = FaucetUser.objects.get(address=self.request.session['address']).balance
+        
+        if self.request.session.get('address') is not None:
+            context['balance'] = FaucetUser.objects.get(address=self.request.session['address']).balance
 
         return context
        

@@ -22,7 +22,7 @@ Play (waiting)
 
             {% if nextroll <= 1 %}
             <h3>1. Solve captcha</h3>
-            <p><div class="g-recaptcha" data-sitekey="6LehjA4TAAAAAKrYhOerufKSiCgZbg6tG2i9_U8l"></div></p>
+            <p><div class="g-recaptcha" data-sitekey="6LehjA4TAAAAAKrYhOerufKSiCgZbg6tG2i9_U8l"></div></p> {# todo: move this to a templatetag so sitekey can be fetched from settings #}
             <h3>2. Click me</h3>
             <p><button class="btn btn-success btn-lg" type="button" id="cmdRoll">Roll dice</button></p>
 
