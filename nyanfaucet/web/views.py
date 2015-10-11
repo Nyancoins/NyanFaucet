@@ -234,7 +234,7 @@ class PlayView(NyanFaucetMixin, AjaxableResponseMixin, generic.FormView):
 
         return super(PlayView, self).form_valid(form)
 
-class HistoryView(generic.TemplateView):
+class HistoryView(NyanFaucetMixin, generic.TemplateView):
     template_name = "history.html"
 
     @method_decorator(nyan_login_required)
@@ -289,7 +289,7 @@ class WithdrawView(NyanFaucetMixin, generic.FormView):
 
         return self.render_to_response(c, **kwargs)
 
-class DonateView(generic.TemplateView):
+class DonateView(NyanFaucetMixin, generic.TemplateView):
     template_name = "donate.html"
 
 

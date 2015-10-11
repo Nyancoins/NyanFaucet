@@ -1,4 +1,4 @@
-﻿{% extends "base.html" %}
+﻿{% extends "base.html" %}{% load staticfiles %}
 
 {% block title%}- Donate{% endblock %}
 
@@ -20,7 +20,15 @@
             <h1>If you wish to donate</h1>
             <p>send your Ɲyan to this address: <strong><a href="https://nyan.space/address/KFAUCETqh5jATpEtbCJeiax2cKdDnNxdpv">KFAUCETqh5jATpEtbCJeiax2cKdDnNxdpv</a></strong></p>
         </div>
+        <p>
+            <small>
+                In the future there may be a more personalized donation mechanism to keep track of how much was donated and showing a Top 10 donor ranking! You may keep track of recent developments on <a target="_blank" href="https://www.reddit.com/r/nyancoins/">reddit</a> or on the <a target="_blank" href="https://www.pivotaltracker.com/n/projects/1371880">project tracker</a>.
+            </small>
+        </p>
 
+        <img class="img-responsive img-rounded center-block" style="box-shadow:rgba(128, 128, 128, 0.5) 3px 3px 4px" src="{% static 'img/thank_you_card__nyan_cat__by_k4it0u.jpg' %}" alt="Thank You Card: Nyan Cat by k4it0u - http://k4it0u.deviantart.com/art/Thank-You-Card-Nyan-Cat-273520987" /><br />
+        <p class="text-center"><small style="color:#999;font-style:italic"><a rel="nofollow" target="_blank" href="http://k4it0u.deviantart.com/art/Thank-You-Card-Nyan-Cat-273520987">Art by k4it0u</a></small></p>
+        
     </div>
 </div>
 
