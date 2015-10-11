@@ -119,6 +119,7 @@
     <Content Include="nyanfaucet\web\static\tile.png" />
     <Content Include="nyanfaucet\web\static\tile.psd" />
     <Content Include="nyanfaucet\web\templates\cheque.html" />
+    <Content Include="nyanfaucet\web\templates\donate.html" />
     <Content Include="nyanfaucet\web\templates\history.html" />
     <Content Include="nyanfaucet\web\templates\account_rolls.html" />
     <Content Include="nyanfaucet\web\templates\account_withdrawals.html" />

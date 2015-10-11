@@ -1,4 +1,4 @@
-"""nyanfaucet URL Configuration
+﻿"""nyanfaucet URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.8/topics/http/urls/
@@ -28,7 +28,9 @@ urlpatterns = [
   url(r'^logout$', views.LogoutView.as_view(), name='logout'),
   url(r'^activator/(?P<nonce>\w+)?$', views.ActivationHelper.as_view(), name='activation_helper'),
 
+  url(r'^donate$', views.DonateView.as_view(), name='donate'),
   url(r'^play$', views.PlayView.as_view(), name='play'),
   url(r'^withdraw$', views.WithdrawView.as_view(), name='withdraw'),
   url(r'^history', views.HistoryView.as_view(), name='account'),
+  
 ]

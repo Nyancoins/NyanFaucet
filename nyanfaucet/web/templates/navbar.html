@@ -5,6 +5,7 @@
     <li class="{% navactive request 'play' %}"><a href="{% url 'play'%}">Play</a></li>
     <li class="{% navactive request 'withdraw' %}"><a href="{% url 'withdraw'%}">Withdraw</a></li>
     <li class="{% navactive request 'account' %}"><a href="{% url 'account'%}">History</a></li>
+    <li class="{% navactive request 'donate' %}"><a href="{% url 'donate'%}">Donate</a></li>
 </ul>
 
 {% if request.session.address %}

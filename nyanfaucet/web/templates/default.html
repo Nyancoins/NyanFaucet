@@ -1,5 +1,7 @@
 {% extends "base.html" %}{% load faucet %}
 
+{% block title %}- About{% endblock %}
+
 {% block content %}
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
@@ -20,7 +22,7 @@
 <!-- Example row of columns -->
 <div class="row">
     <div class="col-md-4">
-        <h2>What is NyanCoin?</h2>
+        <h2><i class="fa fa-btc"></i> What is NyanCoin?</h2>
         <p>Nyancoin is a cryptocurrency based on Nyan Cat and was launched in January 2014 ... </p>
         <p><a class="btn btn-default" target="_blank" href="http://www.nyancoin.info/whatis.nyan" role="button">Read more &raquo;</a></p>
     </div>
@@ -30,10 +32,10 @@
         <p><a class="btn btn-default" href="http://www.reddit.com/r/nyancoins/" role="button">/r/NyanCoins &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Faucet balance</h2>
+        <h2><span class="glyphicon glyphicon-piggy-bank" aria-hidden="true"></span> Faucet balance</h2>
         <p>Current balance: {{ faucetbalance }}</p>
         <p>This faucet is entirely run off donations by the community, please consider donating!</p>
-        <p><a class="btn btn-primary" href="#" role="button">Donate <strong>&hearts;</strong> &raquo;</a></p>
+        <p><a class="btn btn-primary" href="{% url 'donate'%}" role="button">Donate <strong>&hearts;</strong> &raquo;</a></p>
     </div>
 </div>
 {% endblock %}

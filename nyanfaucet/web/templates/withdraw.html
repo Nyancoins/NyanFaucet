@@ -1,5 +1,7 @@
 ﻿{% extends "base.html" %}{% load account_helpers %}{% load bootstrap %}
 
+{% block title %}- Withdraw{% endblock %}
+
 {% block content %}
 {% if faucetbalance < faucetminbalance %}{% include 'insufficient_balance.html' %}{% else %}
 

@@ -289,4 +289,7 @@ class WithdrawView(NyanFaucetMixin, generic.FormView):
 
         return self.render_to_response(c, **kwargs)
 
+class DonateView(generic.TemplateView):
+    template_name = "donate.html"
+
 
