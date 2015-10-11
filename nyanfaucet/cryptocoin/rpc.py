@@ -16,7 +16,10 @@ def get_faucet_balance(cached=True):
     b = cache.get('faucet_balance', None)
     if b is None:
         b = rpc_balance()
-        cache.set('faucet_balance', b, 60)
+        if b is None:
+            cache.set('faucet_balance', b, 10) # don't cache as long
+        else:
+            cache.set('faucet_balance', b, 60)
     return b
 
 def rpc_balance():
